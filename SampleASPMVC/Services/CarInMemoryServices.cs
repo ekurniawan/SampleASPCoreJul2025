@@ -66,7 +66,9 @@ public class CarInMemoryServices : ICar
         // var cars = from c in this.cars
         //            where c.Model.Equals(model, StringComparison.OrdinalIgnoreCase)
         //            select c;
-        var cars = this.cars.Where(c => c.Model.Contains(model));
+        var cars = this.cars.Where(c => c.Model.ToLower().Contains(model.ToLower()) ||
+        c.Type.ToLower().Contains(model.ToLower()) ||
+        c.Color.ToLower().Contains(model.ToLower()));
         return cars;
     }
 
