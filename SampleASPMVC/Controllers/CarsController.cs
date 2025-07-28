@@ -13,15 +13,22 @@ namespace SampleASPMVC.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string? search = "")
         {
+            List<Car> models = new List<Car>();
             if (TempData["Message"] != null)
             {
                 ViewBag.Message = TempData["Message"];
             }
+            if (!string.IsNullOrEmpty(search))
+            {
+                models = _carService.GetByModel(search).ToList();
+            }
+            else
+            {
+                models = _carService.GetAll().ToList();
+            }
 
-            var models = _carService.GetAll();
             return View(models);
         }
 

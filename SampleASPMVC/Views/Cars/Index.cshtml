@@ -4,8 +4,17 @@
     var cars = ViewBag.Cars as List<string>;
 }
 
-<div>
+<div class="col-md-12">
     <h2>Cars Lists</h2><br />
+
+    <div class="col-md-6">
+        <form asp-action="Index" method="get">
+            <div class="input-group mb-3">
+                <input type="text" id="search" name="search" placeholder="Search by Model" class="form-control" />
+                <button type="submit" class="btn btn-primary btn-sm">Search</button>
+            </div>
+        </form>
+    </div>
 
     @Html.Raw(ViewBag.Message)
     <a asp-action="Insert" class="btn btn-success btn-sm">Insert New Car</a>

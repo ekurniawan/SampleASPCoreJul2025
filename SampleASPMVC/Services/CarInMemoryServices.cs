@@ -63,7 +63,11 @@ public class CarInMemoryServices : ICar
 
     public IEnumerable<Car> GetByModel(string model)
     {
-        throw new NotImplementedException();
+        // var cars = from c in this.cars
+        //            where c.Model.Equals(model, StringComparison.OrdinalIgnoreCase)
+        //            select c;
+        var cars = this.cars.Where(c => c.Model.Contains(model));
+        return cars;
     }
 
     public IEnumerable<Car> GetByType(string type)
