@@ -40,7 +40,7 @@ namespace SampleASPMVC.Controllers
                 {
                     _carService.Create(car);
 
-                    TempData["Message"] = "<span class='alert-success'>Car added successfully!</span>";
+                    TempData["Message"] = "<span class='alert alert-success'>Car added successfully!</span><br/><br/>";
                     return RedirectToAction("Index");
                 }
             }
@@ -51,6 +51,7 @@ namespace SampleASPMVC.Controllers
             return View(car);
         }
 
+        [HttpGet]
         public IActionResult Update(int id)
         {
             var car = _carService.Read(id);
@@ -63,11 +64,12 @@ namespace SampleASPMVC.Controllers
 
         [HttpPost]
         [ActionName("Update")]
-        public IActionResult UpdatePost(int CarID, Car car)
+        public IActionResult UpdatePost(int id, Car car)
         {
-            if (CarID != car.CarID)
+            var result = _carService.Read(id);
+            if (result == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             try
@@ -75,8 +77,43 @@ namespace SampleASPMVC.Controllers
                 if (ModelState.IsValid)
                 {
                     _carService.Update(car);
+                    TempData["Message"] = "<span class='alert alert-success'>Car updated successfully!</span><br/><br/>";
                     return RedirectToAction("Index");
                 }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View(car);
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var car = _carService.Read(id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            return View(car);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public IActionResult DeletePost(int id)
+        {
+            var car = _carService.Read(id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _carService.Delete(id);
+                TempData["Message"] = $"<span class='alert alert-success'>Car model {car.Model} deleted successfully!</span><br/><br/>";
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
