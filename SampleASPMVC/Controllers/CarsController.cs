@@ -41,9 +41,9 @@ namespace SampleASPMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult InsertPost(string CarID)
+        public IActionResult InsertPost(Car car)
         {
-            return Content($"CarID: {CarID}");
+            return View(car);
         }
 
     }

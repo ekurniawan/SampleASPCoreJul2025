@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Insert Post";
+}
+<div>
+    <h1 class="display-4">Insert Car</h1>
+    <p>Car has been inserted successfully!</p>
+    <p>Car ID: @Model.CarID</p>
+    <p>Model: @Model.Model</p>
+    <p>Type: @Model.Type</p>
+    <p>Base Price: @string.Format("{0:N0}", Model.BasePrice)</p>
+    <p>Color: @Model.Color</p>
+    <p>Stock: @Model.Stock</p>
+    <a href="/Cars/Index" class="btn btn-primary">Back to Cars List</a>
+</div>
