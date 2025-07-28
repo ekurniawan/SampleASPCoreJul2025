@@ -41,6 +41,7 @@ namespace SampleASPMVC.Controllers
         }
 
         [HttpPost]
+        [ActionName("Insert")]
         public IActionResult InsertPost(Car car)
         {
             return View(car);

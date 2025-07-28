@@ -29,6 +29,7 @@
                 <th>Base Price</th>
                 <th>Color</th>
                 <th>Stock</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,9 @@
                     <td>@string.Format("{0:N0}", car.BasePrice)</td>
                     <td>@car.Color</td>
                     <td>@car.Stock</td>
+                    <td>
+                        <a href="/Cars/Edit/@car.CarID" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
                 </tr>
             }
         </tbody>
