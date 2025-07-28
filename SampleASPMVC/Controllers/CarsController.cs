@@ -29,6 +29,18 @@ namespace SampleASPMVC.Controllers
         [ActionName("Insert")]
         public IActionResult InsertPost(Car car)
         {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _carService.Create(car);
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
             return View(car);
         }
 

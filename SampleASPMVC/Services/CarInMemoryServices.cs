@@ -5,10 +5,9 @@ namespace SampleASPMVC.Services;
 
 public class CarInMemoryServices : ICar
 {
-    private List<Car> cars;
+    private List<Car> cars = new List<Car>();
     public CarInMemoryServices()
     {
-        cars = new List<Car>();
         // Initialize with some sample data
         cars.Add(new Car { CarID = 1, Model = "Model S", Type = "Sedan", BasePrice = 79999, Color = "Red", Stock = 10 });
         cars.Add(new Car { CarID = 2, Model = "Model X", Type = "SUV", BasePrice = 89999, Color = "Blue", Stock = 5 });

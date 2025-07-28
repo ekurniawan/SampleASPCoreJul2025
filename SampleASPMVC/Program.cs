@@ -5,7 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<ICar, CarInMemoryServices>();
+// Register the CarInMemoryServices as the implementation for ICar
+builder.Services.AddSingleton<ICar, CarInMemoryServices>();
 
 var app = builder.Build();
 
