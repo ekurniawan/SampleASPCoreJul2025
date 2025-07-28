@@ -1,0 +1,36 @@
+@model SampleASPMVC.Models.Car
+@{
+    ViewData["Title"] = "Update Car";
+}
+<div class="col-md-6">
+    <h3>Update Car</h3>
+    <form asp-action="Update" method="post">
+        <div class="form-group">
+            <label>Car ID :</label>
+            <input type="text" name="CarID" value="@Model.CarID" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label>Model :</label>
+            <input type="text" name="Model" value="@Model.Model" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Type :</label>
+            <input type="text" name="Type" value="@Model.Type" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Base Price :</label>
+            <input type="text" name="BasePrice" value="@Model.BasePrice" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Color :</label>
+            <input type="text" name="Color" value="@Model.Color" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label>Stock :</label>
+            <input type="text" name="Stock" value="@Model.Stock" class="form-control" />
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+        <a asp-action="Index" class="btn btn-secondary btn-sm">Cancel</a>
+    </form>
+</div>

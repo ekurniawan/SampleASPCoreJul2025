@@ -26,7 +26,11 @@ public class CarInMemoryServices : ICar
 
     public Car Read(int id)
     {
-        var car = cars.FirstOrDefault(c => c.CarID == id);
+        //var car = cars.FirstOrDefault(c => c.CarID == id);
+        var car = (from c in cars
+                   where c.CarID == id
+                   select c).FirstOrDefault();
+
         if (car == null)
         {
             throw new KeyNotFoundException($"Car with ID {id} not found.");

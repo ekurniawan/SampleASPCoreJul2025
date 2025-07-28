@@ -4,8 +4,9 @@
     var cars = ViewBag.Cars as List<string>;
 }
 
-<div class="text-center">
-    <h2>Cars Lists</h2>
+<div>
+    <h2>Cars Lists</h2><br />
+    <a asp-action="Insert" class="btn btn-success btn-sm">Insert New Car</a>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -29,7 +30,7 @@
                     <td>@car.Color</td>
                     <td>@car.Stock</td>
                     <td>
-                        <a href="/Cars/Edit/@car.CarID" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Update" asp-route-id="@car.CarID" class="btn btn-warning btn-sm">Edit</a>
                     </td>
                 </tr>
             }

@@ -44,5 +44,15 @@ namespace SampleASPMVC.Controllers
             return View(car);
         }
 
+        public IActionResult Update(int id)
+        {
+            var car = _carService.Read(id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+            return View(car);
+        }
+
     }
 }
