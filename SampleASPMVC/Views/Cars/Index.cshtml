@@ -6,6 +6,9 @@
 
 <div>
     <h2>Cars Lists</h2><br />
+
+    @Html.Raw(ViewBag.Message)
+    <br />
     <a asp-action="Insert" class="btn btn-success btn-sm">Insert New Car</a>
     <table class="table table-striped">
         <thead>

@@ -16,6 +16,11 @@ namespace SampleASPMVC.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             var models = _carService.GetAll();
             return View(models);
         }
@@ -34,6 +39,8 @@ namespace SampleASPMVC.Controllers
                 if (ModelState.IsValid)
                 {
                     _carService.Create(car);
+
+                    TempData["Message"] = "<span class='alert-success'>Car added successfully!</span>";
                     return RedirectToAction("Index");
                 }
             }
@@ -54,5 +61,29 @@ namespace SampleASPMVC.Controllers
             return View(car);
         }
 
+        [HttpPost]
+        [ActionName("Update")]
+        public IActionResult UpdatePost(int CarID, Car car)
+        {
+            if (CarID != car.CarID)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _carService.Update(car);
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return View(car);
+        }
     }
 }

@@ -60,5 +60,20 @@ public class CarInMemoryServices : ICar
     {
         return cars;
     }
+
+    public IEnumerable<Car> GetByModel(string model)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Car> GetByType(string type)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Car> GetByColor(string color)
+    {
+        throw new NotImplementedException();
+    }
 }
 
