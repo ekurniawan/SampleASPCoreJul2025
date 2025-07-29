@@ -132,11 +132,12 @@ namespace SampleASPMVC.Services
             {
                 try
                 {
-                    string strSql = @"update Car set Model = @Model, Type = @Type, 
-                                BasePrice = @BasePrice, Color = @Color, 
-                                Stock = @Stock where CarID = @CarID";
+                    //string strSql = @"update Car set Model = @Model, Type = @Type, 
+                    //BasePrice = @BasePrice, Color = @Color, 
+                    //            Stock = @Stock where CarID = @CarID";
+                    string strSql = @"UpdateCar";
                     SqlCommand cmd = new SqlCommand(strSql, conn);
-                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@CarID", item.CarID);
                     cmd.Parameters.AddWithValue("@Model", item.Model);
                     cmd.Parameters.AddWithValue("@Type", item.Type);
