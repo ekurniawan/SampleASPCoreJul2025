@@ -128,7 +128,41 @@ namespace SampleASPMVC.Services
 
         public Car Update(Car item)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                try
+                {
+                    string strSql = @"update Car set Model = @Model, Type = @Type, 
+                                BasePrice = @BasePrice, Color = @Color, 
+                                Stock = @Stock where CarID = @CarID";
+                    SqlCommand cmd = new SqlCommand(strSql, conn);
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.AddWithValue("@CarID", item.CarID);
+                    cmd.Parameters.AddWithValue("@Model", item.Model);
+                    cmd.Parameters.AddWithValue("@Type", item.Type);
+                    cmd.Parameters.AddWithValue("@BasePrice", item.BasePrice ?? 0.0);
+                    cmd.Parameters.AddWithValue("@Color", item.Color);
+                    cmd.Parameters.AddWithValue("@Stock", item.Stock ?? 0);
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        return item; // Return the updated car object
+                    }
+                    else
+                    {
+                        throw new Exception("No rows were updated. The car may not exist.");
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Number: {sqlEx.Number} Ket:{sqlEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error: {ex.Message}");
+                }
+            }
         }
     }
 }
