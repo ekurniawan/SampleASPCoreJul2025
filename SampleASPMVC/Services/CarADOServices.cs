@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using SampleASPMVC.Models;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace SampleASPMVC.Services
 {
@@ -138,7 +139,49 @@ namespace SampleASPMVC.Services
 
         public IEnumerable<Car> GetByModel(string model)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                //                CREATE PROCEDURE dbo.SearchCars
+                //    @Model NVARCHAR(100),
+                //    @Type NVARCHAR(100),
+                //    @Color NVARCHAR(100)
+                //AS
+                //BEGIN
+                //    SET NOCOUNT ON;
+
+                //                SELECT*
+                //                FROM Car
+                //                WHERE Model LIKE @Model
+                //                   OR Type LIKE @Type
+                //                   OR Color LIKE @Color
+                //                ORDER BY Model ASC;
+                //                END
+                string strSql = @"SearchCars";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Model", "%" + model + "%");
+                cmd.Parameters.AddWithValue("@Type", "%" + model + "%");
+                cmd.Parameters.AddWithValue("@Color", "%" + model + "%");
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    List<Car> cars = new List<Car>();
+                    while (reader.Read())
+                    {
+                        Car car = new Car
+                        {
+                            CarID = Convert.ToInt32(reader["CarID"]),
+                            Model = reader["Model"].ToString(),
+                            Type = reader["Type"].ToString(),
+                            BasePrice = Convert.ToDouble(reader["BasePrice"]),
+                            Color = reader["Color"].ToString(),
+                            Stock = Convert.ToInt32(reader["Stock"])
+                        };
+                        cars.Add(car);
+                    }
+                    return cars;
+                }
+            }
         }
 
         public IEnumerable<Car> GetByType(string type)
