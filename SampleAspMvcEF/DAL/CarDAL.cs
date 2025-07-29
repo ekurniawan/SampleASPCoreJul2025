@@ -24,7 +24,8 @@ public class CarDAL : ICar
 
     public IEnumerable<Car> GetAll()
     {
-        return _context.Car.ToList();
+        var cars = _context.Car.ToList();
+        return cars;
     }
 
     public IEnumerable<Car> GetByColor(string color)

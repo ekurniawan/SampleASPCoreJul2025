@@ -1,7 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using SampleAspMvcEF.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//add ef db context
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AutomotiveDBConnectionString")));
+builder.Services.AddScoped<ICar, CarDAL>();
 
 var app = builder.Build();
 

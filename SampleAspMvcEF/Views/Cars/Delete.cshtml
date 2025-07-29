@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="col-md-6">
+    <h3>Delete Car</h3>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="CarID" value="@Model.CarID" />
+        <p>Are you sure you want to delete this car <strong>@Model.Model</strong> ? </p>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
