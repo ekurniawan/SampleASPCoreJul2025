@@ -10,7 +10,5 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<Car> Cars { get; set; } = null!;
-
-
+    public DbSet<Car> Car { get; set; } = null!;
 }
