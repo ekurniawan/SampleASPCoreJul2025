@@ -1,5 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
 using SampleASPMVC.Models;
+using System.Collections.Generic;
 
 namespace SampleASPMVC.Services
 {
@@ -23,6 +25,23 @@ namespace SampleASPMVC.Services
             {
                 try
                 {
+
+                    //CREATE PROCEDURE dbo.InsertCar
+                    //    @Model NVARCHAR(100),
+                    //    @Type NVARCHAR(50),
+                    //    @BasePrice DECIMAL(18,2),
+                    //    @Color NVARCHAR(50),
+                    //    @Stock INT
+                    //AS
+                    //BEGIN
+                    //    SET NOCOUNT ON;
+
+                    //    INSERT INTO Car (Model, Type, BasePrice, Color, Stock)
+                    //    VALUES (@Model, @Type, @BasePrice, @Color, @Stock);
+
+                    //    SELECT SCOPE_IDENTITY() AS NewCarId;
+                    //END
+
                     string strSql = @"InsertCar";
                     SqlCommand cmd = new SqlCommand(strSql, conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -132,9 +151,28 @@ namespace SampleASPMVC.Services
             {
                 try
                 {
-                    //string strSql = @"update Car set Model = @Model, Type = @Type, 
-                    //BasePrice = @BasePrice, Color = @Color, 
-                    //            Stock = @Stock where CarID = @CarID";
+                    //                    CREATE PROCEDURE dbo.UpdateCar
+                    //                        @CarID INT,
+                    //    @Model NVARCHAR(100),
+                    //    @Type NVARCHAR(50),
+                    //    @BasePrice DECIMAL(18,2),
+                    //    @Color NVARCHAR(50),
+                    //    @Stock INT
+                    //AS
+                    //BEGIN
+                    //    SET NOCOUNT OFF;
+
+                    //                    UPDATE Car
+                    //    SET
+                    //        Model = @Model,
+                    //        Type = @Type,
+                    //        BasePrice = @BasePrice,
+                    //        Color = @Color,
+                    //        Stock = @Stock
+                    //    WHERE CarID = @CarID;
+                    //                    END
+
+
                     string strSql = @"UpdateCar";
                     SqlCommand cmd = new SqlCommand(strSql, conn);
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
