@@ -6,7 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Register the CarInMemoryServices as the implementation for ICar
-builder.Services.AddSingleton<ICar, CarInMemoryServices>();
+//builder.Services.AddSingleton<ICar, CarInMemoryServices>();
+builder.Services.AddScoped<ICar, CarADOServices>();
 
 var app = builder.Build();
 

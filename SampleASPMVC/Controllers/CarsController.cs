@@ -12,7 +12,6 @@ namespace SampleASPMVC.Controllers
             _carService = carService;
         }
 
-
         public IActionResult Index(string? search = "")
         {
             List<Car> models = new List<Car>();
