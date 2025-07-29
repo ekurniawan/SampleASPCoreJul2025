@@ -68,7 +68,37 @@ namespace SampleASPMVC.Services
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                try
+                {
+                    //CREATE PROCEDURE dbo.DeleteCar
+                    //    @CarID INT
+                    //AS
+                    //BEGIN
+                    //    SET NOCOUNT OFF;
+                    //    DELETE FROM Car WHERE CarID = @CarID;
+                    //END
+                    string strSql = @"DeleteCar";
+                    SqlCommand cmd = new SqlCommand(strSql, conn);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CarID", id);
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("No rows were deleted. The car may not exist.");
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Number: {sqlEx.Number} Ket:{sqlEx.Message}");
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Error: {ex.Message}");
+                }
+            }
         }
 
         public IEnumerable<Car> GetAll()
