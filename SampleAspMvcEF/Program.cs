@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //add ef db context
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AutomotiveDB3Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AutomotiveDBConnectionString")));
 builder.Services.AddScoped<ICar, CarDAL>();
 

@@ -1,13 +1,13 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using SampleAspMvcEF.Models;
+using System;
 
 namespace SampleAspMvcEF.DAL;
 
 public class CarDAL : ICar
 {
-    private readonly ApplicationDbContext _context;
-    public CarDAL(ApplicationDbContext context)
+    private readonly AutomotiveDB3Context _context;
+    public CarDAL(AutomotiveDB3Context context)
     {
         _context = context;
     }
@@ -16,7 +16,7 @@ public class CarDAL : ICar
     {
         try
         {
-            _context.Car.Add(item);
+            _context.Cars.Add(item);
             _context.SaveChanges();
             return item;
         }
@@ -28,13 +28,26 @@ public class CarDAL : ICar
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var car = GetById(id);
+            if (car == null)
+            {
+                throw new Exception("Car not found");
+            }
+            _context.Cars.Remove(car);
+            _context.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error deleting car: " + ex.Message);
+        }
     }
 
     public IEnumerable<Car> GetAll()
     {
         //var cars = _context.Car.OrderByDescending(c => c.Model).ThenByDescending(c => c.Color).ToList();
-        var cars = from c in _context.Car
+        var cars = from c in _context.Cars
                    orderby c.Model descending, c.Color descending
                    select c;
         return cars;
@@ -47,7 +60,7 @@ public class CarDAL : ICar
 
     public Car GetById(int id)
     {
-        var result = _context.Car.Where(c => c.CarID == id).FirstOrDefault();
+        var result = _context.Cars.Where(c => c.CarId == id).FirstOrDefault();
         // var result = (from c in _context.Car
         //               where c.CarID == id
         //               select c).FirstOrDefault();
@@ -61,7 +74,13 @@ public class CarDAL : ICar
 
     public IEnumerable<Car> GetByModel(string model)
     {
-        throw new NotImplementedException();
+        var results = _context.Cars.Where(c => c.Model.Contains(model)
+        || c.Color.Contains(model) || c.Type.Contains(model)).ToList();
+        if (results == null || !results.Any())
+        {
+            throw new Exception("No cars found with the specified model");
+        }
+        return results;
     }
 
     public IEnumerable<Car> GetByType(string type)
@@ -71,7 +90,7 @@ public class CarDAL : ICar
 
     public Car Update(Car item)
     {
-        var result = GetById(item.CarID);
+        var result = GetById(item.CarId);
         if (result == null)
         {
             throw new Exception("Car not found");
