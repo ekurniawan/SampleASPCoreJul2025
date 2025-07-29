@@ -14,7 +14,16 @@ public class CarDAL : ICar
 
     public Car Create(Car item)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Car.Add(item);
+            _context.SaveChanges();
+            return item;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error creating car: " + ex.Message);
+        }
     }
 
     public void Delete(int id)
@@ -24,7 +33,10 @@ public class CarDAL : ICar
 
     public IEnumerable<Car> GetAll()
     {
-        var cars = _context.Car.ToList();
+        //var cars = _context.Car.OrderByDescending(c => c.Model).ThenByDescending(c => c.Color).ToList();
+        var cars = from c in _context.Car
+                   orderby c.Model descending, c.Color descending
+                   select c;
         return cars;
     }
 
@@ -35,7 +47,16 @@ public class CarDAL : ICar
 
     public Car GetById(int id)
     {
-        throw new NotImplementedException();
+        var result = _context.Car.Where(c => c.CarID == id).FirstOrDefault();
+        // var result = (from c in _context.Car
+        //               where c.CarID == id
+        //               select c).FirstOrDefault();
+        //var result = _context.Car.Find(id);
+        if (result == null)
+        {
+            throw new Exception("Car not found");
+        }
+        return result;
     }
 
     public IEnumerable<Car> GetByModel(string model)
@@ -50,6 +71,25 @@ public class CarDAL : ICar
 
     public Car Update(Car item)
     {
-        throw new NotImplementedException();
+        var result = GetById(item.CarID);
+        if (result == null)
+        {
+            throw new Exception("Car not found");
+        }
+        try
+        {
+            _context.Entry(result).CurrentValues.SetValues(item);
+            /*result.Model = item.Model;
+            result.Color = item.Color;
+            result.Type = item.Type;
+            result.BasePrice = item.BasePrice;
+            result.Stock = item.Stock;*/
+            _context.SaveChanges();
+            return item;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error updating car: " + ex.Message);
+        }
     }
 }
