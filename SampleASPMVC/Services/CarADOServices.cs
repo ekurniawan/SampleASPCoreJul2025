@@ -27,6 +27,19 @@ namespace SampleASPMVC.Services
             {
                 try
                 {
+                    string strSql = @"InsertCar";
+                    var param = new
+                    {
+                        Model = item.Model,
+                        Type = item.Type,
+                        BasePrice = item.BasePrice ?? 0.0,
+                        Color = item.Color,
+                        Stock = item.Stock ?? 0
+                    };
+
+                    var carID = conn.QuerySingle<int>(strSql, param, commandType: System.Data.CommandType.StoredProcedure);
+                    item.CarID = carID; // Set the CarID to the newly created ID
+                    return item; // Return the created car object
 
                     //CREATE PROCEDURE dbo.InsertCar
                     //    @Model NVARCHAR(100),
@@ -44,18 +57,18 @@ namespace SampleASPMVC.Services
                     //    SELECT SCOPE_IDENTITY() AS NewCarId;
                     //END
 
-                    string strSql = @"InsertCar";
-                    SqlCommand cmd = new SqlCommand(strSql, conn);
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Model", item.Model);
-                    cmd.Parameters.AddWithValue("@Type", item.Type);
-                    cmd.Parameters.AddWithValue("@BasePrice", item.BasePrice ?? 0.0);
-                    cmd.Parameters.AddWithValue("@Color", item.Color);
-                    cmd.Parameters.AddWithValue("@Stock", item.Stock ?? 0);
-                    conn.Open();
-                    var result = Convert.ToInt32(cmd.ExecuteScalar());
-                    item.CarID = result; // Set the CarID to the newly created ID
-                    return item; // Return the created car object
+                    //string strSql = @"InsertCar";
+                    //SqlCommand cmd = new SqlCommand(strSql, conn);
+                    //cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    //cmd.Parameters.AddWithValue("@Model", item.Model);
+                    //cmd.Parameters.AddWithValue("@Type", item.Type);
+                    //cmd.Parameters.AddWithValue("@BasePrice", item.BasePrice ?? 0.0);
+                    //cmd.Parameters.AddWithValue("@Color", item.Color);
+                    //cmd.Parameters.AddWithValue("@Stock", item.Stock ?? 0);
+                    //conn.Open();
+                    //var result = Convert.ToInt32(cmd.ExecuteScalar());
+                    //item.CarID = result; // Set the CarID to the newly created ID
+                    //return item; // Return the created car object
                 }
                 catch (SqlException sqlEx)
                 {
