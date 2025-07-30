@@ -50,6 +50,7 @@ public class CarDAL : ICar
         var cars = from c in _context.Cars
                    orderby c.Model descending, c.Color descending
                    select c;
+
         return cars;
     }
 
