@@ -28,12 +28,27 @@ namespace SampleAspMvcEF.DAL
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var dealerCar = GetById(id);
+                if (dealerCar == null)
+                {
+                    throw new Exception($"DealerCar with ID {id} not found.");
+                }
+
+                _context.DealerCars.Remove(dealerCar);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not implemented here)
+                throw new Exception("An error occurred while deleting the dealer car.", ex);
+            }
         }
 
         public IEnumerable<DealerCar> GetAll()
         {
-            var results = _context.DealerCars.Include(c => c.Car).Include(d => d.Dealer)
+            var results = _context.DealerCars.Include(c => c.Car).Include(d => d.Dealer).AsNoTracking()
                                               .ToList();
 
             //var results = from dc in _context.DealerCars
@@ -69,7 +84,29 @@ namespace SampleAspMvcEF.DAL
 
         public DealerCar Update(DealerCar item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var existingDealerCar = GetById(item.DealerCarId);
+                if (existingDealerCar == null)
+                {
+                    throw new Exception($"DealerCar with ID {item.DealerCarId} not found.");
+                }
+
+                existingDealerCar.CarId = item.CarId;
+                existingDealerCar.DealerId = item.DealerId;
+                existingDealerCar.Price = item.Price;
+                existingDealerCar.Stock = item.Stock;
+                existingDealerCar.DiscountPercent = item.DiscountPercent;
+                existingDealerCar.FeePercent = item.FeePercent;
+
+                _context.SaveChanges();
+                return existingDealerCar;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not implemented here)
+                throw new Exception("An error occurred while updating the dealer car.", ex);
+            }
         }
     }
 }
