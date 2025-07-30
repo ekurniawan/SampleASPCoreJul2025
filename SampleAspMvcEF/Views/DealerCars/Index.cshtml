@@ -1,0 +1,40 @@
+@model IEnumerable<SampleAspMvcEF.ViewModels.DealerCarViewModel>
+@{
+    ViewData["Title"] = "Cars in Dealer";
+}
+
+<div class="col-md-12">
+    <h2>Cars Lists</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Dealer Car ID</th>
+                <th>Car ID</th>
+                <th>Model</th>
+                <th>Dealer ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Discount Percent</th>
+                <th>Fee Percent</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dealerCar in Model)
+            {
+                <tr>
+                    <td>@dealerCar.DealerCarId</td>
+                    <td>@dealerCar.CarId</td>
+                    <td>@dealerCar.Model</td>
+                    <td>@dealerCar.DealerId</td>
+                    <td>@dealerCar.Name</td>
+                    <td>@string.Format("{0:N0}", dealerCar.Price)</td>
+                    <td>@dealerCar.Stock</td>
+                    <td>@(dealerCar.DiscountPercent.HasValue? dealerCar.DiscountPercent.Value.ToString("N0") : "N/A") %</td>
+                    <td>@(dealerCar.FeePercent.HasValue? dealerCar.FeePercent.Value.ToString("N0") : "N/A") %</td>
+                </tr>
+            }
+        </tbody>
+
+</div>

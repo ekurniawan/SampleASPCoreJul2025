@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AutomotiveDB3Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AutomotiveDBConnectionString")));
 builder.Services.AddScoped<ICar, CarDAL>();
+builder.Services.AddScoped<IDealerCar, DealerCarDAL>();
 
 var app = builder.Build();
 
