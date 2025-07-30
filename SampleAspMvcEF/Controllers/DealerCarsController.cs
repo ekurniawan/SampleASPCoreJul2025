@@ -18,20 +18,36 @@ namespace SampleAspMvcEF.Controllers
         public ActionResult Index()
         {
             var dealerCars = _dealerCar.GetAll().ToList();
-            var dealerCarViewModel = dealerCars.Select(dc => new DealerCarViewModel
+            /*var dealerCarViewModel = dealerCars.Select(dc => new DealerCarViewModel
+             {
+                 DealerCarId = dc.DealerCarId,
+                 CarId = dc.CarId,
+                 Model = dc.Car.Model,
+                 DealerId = dc.DealerId,
+                 Name = dc.Dealer.Name,
+                 Price = dc.Price,
+                 Stock = dc.Stock,
+                 DiscountPercent = dc.DiscountPercent,
+                 FeePercent = dc.FeePercent
+             }).ToList();*/
+            List<DealerCarViewModel> dealerCarViewModels = new List<DealerCarViewModel>();
+            foreach (var dc in dealerCars)
             {
-                DealerCarId = dc.DealerCarId,
-                CarId = dc.CarId,
-                Model = dc.Car.Model,
-                DealerId = dc.DealerId,
-                Name = dc.Dealer.Name,
-                Price = dc.Price,
-                Stock = dc.Stock,
-                DiscountPercent = dc.DiscountPercent,
-                FeePercent = dc.FeePercent
-            }).ToList();
+                dealerCarViewModels.Add(new DealerCarViewModel
+                {
+                    DealerCarId = dc.DealerCarId,
+                    CarId = dc.CarId,
+                    Model = dc.Car.Model,
+                    DealerId = dc.DealerId,
+                    Name = dc.Dealer.Name,
+                    Price = dc.Price,
+                    Stock = dc.Stock,
+                    DiscountPercent = dc.DiscountPercent,
+                    FeePercent = dc.FeePercent
+                });
+            }
 
-            return View(dealerCarViewModel);
+            return View(dealerCarViewModels);
         }
 
         // GET: DealerCarsController/Details/5
