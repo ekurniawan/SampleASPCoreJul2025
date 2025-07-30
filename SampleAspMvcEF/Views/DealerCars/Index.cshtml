@@ -4,8 +4,15 @@
 }
 
 <div class="col-md-12">
-    <h2>Cars Lists</h2>
+    <h2>Cars Lists</h2><br /><br />
 
+    @if (ViewBag.Message != null)
+    {
+        @Html.Raw(ViewBag.Message)
+    }
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-primary btn-sm">Add New</a>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>

@@ -24,6 +24,11 @@ namespace SampleAspMvcEF.Controllers
         // GET: DealerCarsController
         public ActionResult Index()
         {
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             var dealerCars = _dealerCar.GetAll().ToList();
             /*var dealerCarViewModels = dealerCars.Select(dc => new DealerCarViewModel
              {
@@ -99,6 +104,7 @@ namespace SampleAspMvcEF.Controllers
                         FeePercent = model.FeePercent
                     };
                     _dealerCar.Create(dealerCar);
+                    TempData["Message"] = $"<span class='alert alert-success'>Dealer Car created successfully.</span>";
                     return RedirectToAction(nameof(Index));
                 }
                 return RedirectToAction(nameof(Index));
