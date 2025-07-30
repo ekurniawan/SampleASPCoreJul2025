@@ -13,7 +13,17 @@ namespace SampleAspMvcEF.DAL
 
         public DealerCar Create(DealerCar item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.DealerCars.Add(item);
+                _context.SaveChanges();
+                return item;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (not implemented here)
+                throw new Exception("An error occurred while creating the dealer car.", ex);
+            }
         }
 
         public void Delete(int id)

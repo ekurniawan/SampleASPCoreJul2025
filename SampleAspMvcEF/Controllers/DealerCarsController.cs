@@ -83,11 +83,24 @@ namespace SampleAspMvcEF.Controllers
 
         // POST: DealerCarsController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(DealerCarInsertViewModel model)
         {
             try
             {
+                if (ModelState.IsValid)
+                {
+                    var dealerCar = new DealerCar
+                    {
+                        CarId = model.CarId,
+                        DealerId = model.DealerId,
+                        Price = model.Price,
+                        Stock = model.Stock,
+                        DiscountPercent = model.DiscountPercent,
+                        FeePercent = model.FeePercent
+                    };
+                    _dealerCar.Create(dealerCar);
+                    return RedirectToAction(nameof(Index));
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
