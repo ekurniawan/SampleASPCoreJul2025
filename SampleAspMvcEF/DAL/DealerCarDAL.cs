@@ -48,7 +48,13 @@ namespace SampleAspMvcEF.DAL
 
         public DealerCar GetById(int id)
         {
-            throw new NotImplementedException();
+            var result = _context.DealerCars.Include(c => c.Car).Include(d => d.Dealer)
+                                        .FirstOrDefault(dc => dc.DealerCarId == id);
+
+            if (result == null)
+                throw new Exception($"DealerCar with ID {id} not found.");
+
+            return result;
         }
 
         public DealerCar Update(DealerCar item)

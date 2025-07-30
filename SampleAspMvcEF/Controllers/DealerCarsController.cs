@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SampleAspMvcEF.DAL;
+using SampleAspMvcEF.Models;
 using SampleAspMvcEF.ViewModels;
 
 namespace SampleAspMvcEF.Controllers
@@ -8,9 +10,14 @@ namespace SampleAspMvcEF.Controllers
     public class DealerCarsController : Controller
     {
         private readonly IDealerCar _dealerCar;
-        public DealerCarsController(IDealerCar dealerCar)
+        private readonly ICar _car;
+        private readonly IDealer _dealer;
+
+        public DealerCarsController(IDealerCar dealerCar, ICar car, IDealer dealer)
         {
             _dealerCar = dealerCar;
+            _car = car;
+            _dealer = dealer;
         }
 
 
@@ -18,7 +25,7 @@ namespace SampleAspMvcEF.Controllers
         public ActionResult Index()
         {
             var dealerCars = _dealerCar.GetAll().ToList();
-            /*var dealerCarViewModel = dealerCars.Select(dc => new DealerCarViewModel
+            /*var dealerCarViewModels = dealerCars.Select(dc => new DealerCarViewModel
              {
                  DealerCarId = dc.DealerCarId,
                  CarId = dc.CarId,
@@ -30,7 +37,7 @@ namespace SampleAspMvcEF.Controllers
                  DiscountPercent = dc.DiscountPercent,
                  FeePercent = dc.FeePercent
              }).ToList();*/
-            List<DealerCarViewModel> dealerCarViewModels = new List<DealerCarViewModel>();
+            var dealerCarViewModels = new List<DealerCarViewModel>();
             foreach (var dc in dealerCars)
             {
                 dealerCarViewModels.Add(new DealerCarViewModel
@@ -59,6 +66,18 @@ namespace SampleAspMvcEF.Controllers
         // GET: DealerCarsController/Create
         public ActionResult Create()
         {
+            ViewBag.Cars = _car.GetAll().Select(c => new SelectListItem
+            {
+                Value = c.CarId.ToString(),
+                Text = c.Model
+            }).ToList();
+
+            ViewBag.Dealers = _dealer.GetAll().Select(d => new SelectListItem
+            {
+                Value = d.DealerId.ToString(),
+                Text = d.Name
+            }).ToList();
+
             return View();
         }
 
