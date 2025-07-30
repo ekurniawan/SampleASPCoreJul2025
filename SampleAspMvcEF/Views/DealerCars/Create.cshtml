@@ -6,6 +6,7 @@
 <div class="col-md-4">
     <h3>Insert Dealer Car</h3><br />
     <form asp-action="Create" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
         <div class="mb-3">
             <label asp-for="DealerId" class="form-label">Dealer</label>
             <select asp-for="DealerId" class="form-select" asp-items="ViewBag.Dealers"></select>
