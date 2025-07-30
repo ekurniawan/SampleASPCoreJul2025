@@ -204,16 +204,31 @@ namespace SampleAspMvcEF.Controllers
         // GET: DealerCarsController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var dealerCar = _dealerCar.GetById(id);
+            if (dealerCar == null)
+            {
+                TempData["Message"] = $"<span class='alert alert-danger'>Dealer Car with ID {id} not found.</span>";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(dealerCar);
         }
 
         // POST: DealerCarsController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [ActionName("Delete")]
+        public ActionResult DeletePost(int id)
         {
             try
             {
+                var dealerCar = _dealerCar.GetById(id);
+                if (dealerCar == null)
+                {
+                    TempData["Message"] = $"<span class='alert alert-danger'>Dealer Car with ID {id} not found.</span>";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                _dealerCar.Delete(id);
+                TempData["Message"] = $"<span class='alert alert-success'>Dealer Car with ID {id} deleted successfully.</span>";
                 return RedirectToAction(nameof(Index));
             }
             catch
