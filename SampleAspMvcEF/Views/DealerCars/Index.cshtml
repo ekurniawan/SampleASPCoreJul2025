@@ -23,6 +23,7 @@
                 <th>Stock</th>
                 <th>Discount Percent</th>
                 <th>Fee Percent</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,11 @@
                                         "N/A") %</td>
                     <td class="text-end">@(dealerCar.FeePercent.HasValue? dealerCar.FeePercent.Value.ToString("N0") : "N/A")
                         %</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@dealerCar.DealerCarId" class="btn btn-warning btn-sm">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@dealerCar.DealerCarId"
+                            class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>

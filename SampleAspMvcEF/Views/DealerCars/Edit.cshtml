@@ -1,11 +1,12 @@
-@model SampleAspMvcEF.ViewModels.DealerCarInsertViewModel
+@model SampleAspMvcEF.ViewModels.DealerCarUpdateViewModel
 @{
-    ViewData["Title"] = "Create Dealer Car";
+    ViewData["Title"] = "Edit Dealer Car";
 }
 
 <div class="col-md-4">
-    <h3>Insert Dealer Car</h3><br />
-    <form asp-action="Create" method="post">
+    <h3>Edit Dealer Car</h3><br />
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="DealerId" />
         <div class="mb-3">
             <label asp-for="DealerId" class="form-label">Dealer</label>
             <select asp-for="DealerId" class="form-select" asp-items="ViewBag.Dealers"></select>
@@ -30,14 +31,10 @@
             <span asp-validation-for="DiscountPercent" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="FeePercent" class="form-label">Fee Percent</label>
-            <input asp-for="FeePercent" type="number" class="form-control" />
-            <span asp-validation-for="FeePercent" class="text-danger"></span>
+            <input type="submit" value="Save" class="btn btn-primary" />
         </div>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <div class="mb-3">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
     </form>
 </div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

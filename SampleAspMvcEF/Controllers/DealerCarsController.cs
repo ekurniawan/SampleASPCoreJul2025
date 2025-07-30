@@ -117,7 +117,39 @@ namespace SampleAspMvcEF.Controllers
         // GET: DealerCarsController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var dealerCar = _dealerCar.GetById(id);
+            if (dealerCar == null)
+            {
+                TempData["Message"] = $"<span class='alert alert-danger'>Dealer Car with ID {id} not found.</span>";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = new DealerCarUpdateViewModel
+            {
+                DealerCarId = dealerCar.DealerCarId,
+                CarId = dealerCar.CarId,
+                DealerId = dealerCar.DealerId,
+                Price = dealerCar.Price,
+                Stock = dealerCar.Stock,
+                DiscountPercent = dealerCar.DiscountPercent,
+                FeePercent = dealerCar.FeePercent
+            };
+
+            ViewBag.Cars = _car.GetAll().Select(c => new SelectListItem
+            {
+                Value = c.CarId.ToString(),
+                Text = c.Model,
+                Selected = c.CarId == dealerCar.CarId
+            }).ToList();
+
+            ViewBag.Dealers = _dealer.GetAll().Select(d => new SelectListItem
+            {
+                Value = d.DealerId.ToString(),
+                Text = d.Name,
+                Selected = d.DealerId == dealerCar.DealerId
+            }).ToList();
+
+            return View(model);
         }
 
         // POST: DealerCarsController/Edit/5
