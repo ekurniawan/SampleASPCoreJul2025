@@ -5,6 +5,7 @@
 
 <div class="col-md-4">
     <h3>Edit Dealer Car</h3><br />
+    <div asp-validation-summary="All" class="text-danger"></div>
     <form asp-action="Edit" method="post">
         <input type="hidden" asp-for="DealerId" />
         <div class="mb-3">
@@ -29,6 +30,11 @@
             <label asp-for="DiscountPercent" class="form-label">Discount Percent</label>
             <input asp-for="DiscountPercent" type="number" class="form-control" />
             <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FeePercent" class="form-label">Fee Percent</label>
+            <input asp-for="FeePercent" type="number" class="form-control" />
+            <span asp-validation-for="FeePercent" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <input type="submit" value="Save" class="btn btn-primary" />

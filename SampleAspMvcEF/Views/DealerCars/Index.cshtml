@@ -10,6 +10,7 @@
     {
         @Html.Raw(ViewBag.Message)
     }
+    <br />
     <div class="mb-3">
         <a asp-action="Create" class="btn btn-primary btn-sm">Add New</a>
     </div>
@@ -38,7 +39,7 @@
                     <td class="text-end">@(dealerCar.DiscountPercent.HasValue?
                                         dealerCar.DiscountPercent.Value.ToString("N0") :
                                         "N/A") %</td>
-                    <td class="text-end">@(dealerCar.FeePercent.HasValue? dealerCar.FeePercent.Value.ToString("N0") : "N/A")
+                    <td class="text-end">@(dealerCar.FeePercent.HasValue? dealerCar.FeePercent.Value.ToString("N1") : "N/A")
                         %</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@dealerCar.DealerCarId" class="btn btn-warning btn-sm">Edit</a>

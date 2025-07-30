@@ -155,16 +155,50 @@ namespace SampleAspMvcEF.Controllers
         // POST: DealerCarsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, DealerCarUpdateViewModel model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    var updatedDealerCar = _dealerCar.GetById(id);
+                    if (updatedDealerCar == null)
+                    {
+                        TempData["Message"] = $"<span class='alert alert-danger'>Dealer Car with ID {id} not found.</span>";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    updatedDealerCar.CarId = model.CarId;
+                    updatedDealerCar.DealerId = model.DealerId;
+                    updatedDealerCar.Price = model.Price;
+                    updatedDealerCar.Stock = model.Stock;
+                    updatedDealerCar.DiscountPercent = model.DiscountPercent;
+                    updatedDealerCar.FeePercent = model.FeePercent;
+                    _dealerCar.Update(updatedDealerCar);
+
+                    TempData["Message"] = $"<span class='alert alert-success'>Dealer Car updated successfully.</span>";
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("", $"An error occurred while updating the dealer car: {ex.Message}");
+
+                ViewBag.Cars = _car.GetAll().Select(c => new SelectListItem
+                {
+                    Value = c.CarId.ToString(),
+                    Text = c.Model,
+                    Selected = c.CarId == model.CarId
+                }).ToList();
+
+                ViewBag.Dealers = _dealer.GetAll().Select(d => new SelectListItem
+                {
+                    Value = d.DealerId.ToString(),
+                    Text = d.Name,
+                    Selected = d.DealerId == model.DealerId
+                }).ToList();
             }
+            return View(model);
         }
 
         // GET: DealerCarsController/Delete/5
