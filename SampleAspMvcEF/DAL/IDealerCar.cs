@@ -5,6 +5,5 @@ namespace SampleAspMvcEF.DAL
 {
     public interface IDealerCar : ICrud<DealerCar>
     {
-
     }
 }

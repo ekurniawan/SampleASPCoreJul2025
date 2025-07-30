@@ -10,9 +10,7 @@
         <thead>
             <tr>
                 <th>Dealer Car ID</th>
-                <th>Car ID</th>
                 <th>Model</th>
-                <th>Dealer ID</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock</th>
@@ -25,14 +23,15 @@
             {
                 <tr>
                     <td>@dealerCar.DealerCarId</td>
-                    <td>@dealerCar.CarId</td>
                     <td>@dealerCar.Model</td>
-                    <td>@dealerCar.DealerId</td>
                     <td>@dealerCar.Name</td>
-                    <td>@string.Format("{0:N0}", dealerCar.Price)</td>
-                    <td>@dealerCar.Stock</td>
-                    <td>@(dealerCar.DiscountPercent.HasValue? dealerCar.DiscountPercent.Value.ToString("N0") : "N/A") %</td>
-                    <td>@(dealerCar.FeePercent.HasValue? dealerCar.FeePercent.Value.ToString("N0") : "N/A") %</td>
+                    <td class="text-end">@string.Format("{0:N0}", dealerCar.Price)</td>
+                    <td class="text-end">@dealerCar.Stock</td>
+                    <td class="text-end">@(dealerCar.DiscountPercent.HasValue?
+                                        dealerCar.DiscountPercent.Value.ToString("N0") :
+                                        "N/A") %</td>
+                    <td class="text-end">@(dealerCar.FeePercent.HasValue? dealerCar.FeePercent.Value.ToString("N0") : "N/A")
+                        %</td>
                 </tr>
             }
         </tbody>
