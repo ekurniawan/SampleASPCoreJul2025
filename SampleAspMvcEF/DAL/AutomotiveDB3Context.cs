@@ -77,6 +77,7 @@ public partial class AutomotiveDB3Context : DbContext
 
             entity.ToTable("Car");
 
+            entity.HasIndex(e => e.VId, "UQ__Car__A2B0D9F1C3E4F5B6").IsUnique();
             entity.Property(e => e.CarId).HasColumnName("CarID");
             entity.Property(e => e.Color)
                 .HasMaxLength(20)
