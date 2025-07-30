@@ -20,7 +20,6 @@ namespace SampleAspMvcEF.Controllers
             _dealer = dealer;
         }
 
-
         // GET: DealerCarsController
         public ActionResult Index()
         {

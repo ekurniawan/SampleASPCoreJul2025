@@ -17,18 +17,22 @@
         <div class="mb-3">
             <label asp-for="Price" class="form-label">Price</label>
             <input asp-for="Price" type="number" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="Stock" class="form-label">Stock</label>
             <input asp-for="Stock" type="number" class="form-control" />
+            <span asp-validation-for="Stock" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="DiscountPercent" class="form-label">Discount Percent</label>
             <input asp-for="DiscountPercent" type="number" class="form-control" />
+            <span asp-validation-for="DiscountPercent" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label asp-for="FeePercent" class="form-label">Fee Percent</label>
             <input asp-for="FeePercent" type="number" class="form-control" />
+            <span asp-validation-for="FeePercent" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
     </form>
