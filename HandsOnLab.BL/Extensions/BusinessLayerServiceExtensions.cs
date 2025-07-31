@@ -16,8 +16,6 @@ public static class BusinessLayerServiceExtensions
         services.AddAutoMapper(cfg => cfg.LicenseKey = "",
         typeof(BusinessLayerServiceExtensions));
 
-
-
         // Register Business Logic services
         services.AddScoped<ICarBL, CarBL>();
         services.AddScoped<IDealerBL, DealerBL>();
