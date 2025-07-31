@@ -14,9 +14,34 @@ public class CarBL : ICarBL
         _carDAL = carDAL;
     }
 
-    public CarDTO AddCar(CarInsertDTO car)
+    public CarDTO AddCar(CarInsertDTO carInsertDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var car = new Car
+            {
+                Model = carInsertDto.Model,
+                Type = carInsertDto.Type,
+                BasePrice = carInsertDto.BasePrice,
+                Color = carInsertDto.Color,
+                Stock = carInsertDto.Stock
+            };
+            var addedCar = _carDAL.Create(car);
+            var result = new CarDTO
+            {
+                CarId = addedCar.CarId,
+                Model = addedCar.Model,
+                Type = addedCar.Type,
+                BasePrice = addedCar.BasePrice,
+                Color = addedCar.Color,
+                Stock = addedCar.Stock
+            };
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException($"Error adding car {ex.Message}");
+        }
     }
 
     public void DeleteCar(int id)
@@ -61,7 +86,7 @@ public class CarBL : ICarBL
         return carDtos;
     }
 
-    public CarDTO UpdateCar(CarUpdateDTO car)
+    public CarDTO UpdateCar(CarUpdateDTO carUpdateDto)
     {
         throw new NotImplementedException();
     }

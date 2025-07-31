@@ -32,5 +32,28 @@ namespace HandsOnLab.API.Controllers
             }
             return Ok(car);
         }
+
+        //insert
+        [HttpPost]
+        public ActionResult<CarDTO> AddCar(CarInsertDTO carInsertDto)
+        {
+            try
+            {
+                if (carInsertDto == null)
+                {
+                    return BadRequest("Car data is null.");
+                }
+                var addedCar = _carBL.AddCar(carInsertDto);
+                return CreatedAtAction(nameof(GetCarById), new { id = addedCar.CarId }, addedCar);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

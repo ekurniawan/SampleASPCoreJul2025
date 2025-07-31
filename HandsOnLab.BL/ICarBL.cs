@@ -7,7 +7,7 @@ public interface ICarBL
 {
     IEnumerable<CarDTO> GetCars();
     CarDTO GetById(int id);
-    CarDTO AddCar(CarInsertDTO car);
-    CarDTO UpdateCar(CarUpdateDTO car);
+    CarDTO AddCar(CarInsertDTO carInsertDto);
+    CarDTO UpdateCar(CarUpdateDTO carUpdateDto);
     void DeleteCar(int id);
 }
