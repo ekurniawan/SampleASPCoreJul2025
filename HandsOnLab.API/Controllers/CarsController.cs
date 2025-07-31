@@ -10,7 +10,6 @@ namespace HandsOnLab.API.Controllers
     public class CarsController : ControllerBase
     {
         private readonly ICarBL _carBL;
-
         public CarsController(ICarBL carBL)
         {
             _carBL = carBL;
@@ -24,7 +23,7 @@ namespace HandsOnLab.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CarDTO> GetById(int id)
+        public ActionResult<CarDTO> GetCarById(int id)
         {
             var car = _carBL.GetById(id);
             if (car == null)
