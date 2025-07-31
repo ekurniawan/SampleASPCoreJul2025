@@ -1,6 +1,7 @@
 using HandsOnLab.DAL;
 using Microsoft.EntityFrameworkCore;
 using HandsOnLab.BL.Extensions;
+using HandsOnLab.BL.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,12 +16,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
+
 //add entity framework
 builder.Services.AddDbContext<AutomotiveDB3Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AutomotiveDBConnectionString")));
 
+
 //add business layer services
 builder.Services.AddBusinessLayerServices();
+
 
 
 var app = builder.Build();

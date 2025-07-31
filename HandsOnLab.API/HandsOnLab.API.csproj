@@ -11,6 +11,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7"/>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7"/>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3"/>
+    <PackageReference Include="AutoMapper" Version="15.0.1"/>
+     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.7"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HandsOnLab.BL\HandsOnLab.BL.csproj"/>
