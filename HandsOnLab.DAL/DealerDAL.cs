@@ -14,12 +14,34 @@ public class DealerDAL : IDealer
 
     public Dealer Create(Dealer item)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Dealers.Add(item);
+            _context.SaveChanges();
+            return item;
+        }
+        catch (System.Exception ex)
+        {
+            throw new ArgumentException($"An error occurred while creating the dealer. {ex.Message}", ex);
+        }
     }
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var dealer = _context.Dealers.Find(id);
+            if (dealer == null)
+            {
+                throw new KeyNotFoundException($"Dealer with ID {id} not found.");
+            }
+            _context.Dealers.Remove(dealer);
+            _context.SaveChanges();
+        }
+        catch (System.Exception ex)
+        {
+            throw new ArgumentException($"An error occurred while deleting the dealer. {ex.Message}", ex);
+        }
     }
 
     public IEnumerable<Dealer> GetAll()
@@ -30,11 +52,26 @@ public class DealerDAL : IDealer
 
     public Dealer GetById(int id)
     {
-        throw new NotImplementedException();
+        var result = _context.Dealers
+            .FirstOrDefault(d => d.DealerId == id);
+        if (result == null)
+        {
+            throw new KeyNotFoundException($"Dealer with ID {id} not found.");
+        }
+        return result;
     }
 
     public Dealer Update(Dealer item)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _context.Dealers.Update(item);
+            _context.SaveChanges();
+            return item;
+        }
+        catch (System.Exception ex)
+        {
+            throw new ArgumentException($"An error occurred while updating the dealer. {ex.Message}", ex);
+        }
     }
 }
