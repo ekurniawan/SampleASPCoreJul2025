@@ -98,12 +98,12 @@ public class CarDAL : ICar
         }
         try
         {
-            _context.Entry(result).CurrentValues.SetValues(item);
-            /*result.Model = item.Model;
+            //_context.Entry(result).CurrentValues.SetValues(item);
+            result.Model = item.Model;
             result.Color = item.Color;
             result.Type = item.Type;
             result.BasePrice = item.BasePrice;
-            result.Stock = item.Stock;*/
+            result.Stock = item.Stock;
             _context.SaveChanges();
             return item;
         }

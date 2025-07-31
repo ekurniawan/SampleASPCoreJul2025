@@ -46,7 +46,19 @@ public class CarBL : ICarBL
 
     public void DeleteCar(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var car = _carDAL.GetById(id);
+            if (car == null)
+            {
+                throw new ArgumentException($"Car with id {id} not found.");
+            }
+            _carDAL.Delete(car.CarId);
+        }
+        catch (System.Exception ex)
+        {
+            throw new ArgumentException($"Error deleting car {ex.Message} - {ex.InnerException}");
+        }
     }
 
     public CarDTO GetById(int id)
@@ -88,6 +100,35 @@ public class CarBL : ICarBL
 
     public CarDTO UpdateCar(CarUpdateDTO carUpdateDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var car = _carDAL.GetById(carUpdateDto.CarId);
+            if (car == null)
+            {
+                throw new ArgumentException($"Car with id {carUpdateDto.CarId} not found.");
+            }
+
+            car.Model = carUpdateDto.Model;
+            car.Type = carUpdateDto.Type;
+            car.BasePrice = carUpdateDto.BasePrice;
+            car.Color = carUpdateDto.Color;
+            car.Stock = carUpdateDto.Stock;
+            var updatedCar = _carDAL.Update(car);
+
+            var result = new CarDTO
+            {
+                CarId = updatedCar.CarId,
+                Model = updatedCar.Model,
+                Type = updatedCar.Type,
+                BasePrice = updatedCar.BasePrice,
+                Color = updatedCar.Color,
+                Stock = updatedCar.Stock
+            };
+            return result;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException($"Error updating car {ex.Message} - {ex.InnerException}");
+        }
     }
 }

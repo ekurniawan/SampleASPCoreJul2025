@@ -55,5 +55,47 @@ namespace HandsOnLab.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+
+        [HttpPut("{id}")]
+        public ActionResult<CarDTO> UpdateCar(int id, CarUpdateDTO carUpdateDto)
+        {
+            if (id != carUpdateDto.CarId)
+            {
+                return BadRequest("Car ID mismatch.");
+            }
+
+            try
+            {
+                var updatedCar = _carBL.UpdateCar(carUpdateDto);
+                return Ok(updatedCar);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCar(int id)
+        {
+            try
+            {
+                _carBL.DeleteCar(id);
+                return Ok($"Car id: {id} deleted successfully.");
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
