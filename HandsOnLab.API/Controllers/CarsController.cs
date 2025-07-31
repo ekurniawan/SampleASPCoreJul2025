@@ -19,7 +19,8 @@ namespace HandsOnLab.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<CarDTO>> GetCars()
         {
-            return Ok(_carBL.GetCars());
+            var cars = _carBL.GetCars();
+            return Ok(cars);
         }
 
         [HttpGet("{id}")]
