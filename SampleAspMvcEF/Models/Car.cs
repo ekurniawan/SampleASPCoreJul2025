@@ -11,8 +11,6 @@ public partial class Car
 {
     public int CarId { get; set; }
 
-    public string VId { get; set; }
-
     public string Model { get; set; }
 
     public string Type { get; set; }

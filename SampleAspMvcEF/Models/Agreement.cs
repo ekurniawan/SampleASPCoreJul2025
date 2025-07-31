@@ -8,24 +8,14 @@ namespace SampleAspMvcEF.Models;
 public partial class Agreement
 {
     public int AgreementId { get; set; }
-
     public int CustomerId { get; set; }
-
     public int? SalesPersonId { get; set; }
-
     public int LoiId { get; set; }
-
     public DateOnly? Date { get; set; }
-
     public virtual Credit Credit { get; set; }
-
     public virtual Customer Customer { get; set; }
-
     public virtual LetterOfIntent Loi { get; set; }
-
     public virtual ICollection<PaymentHistory> PaymentHistories { get; set; } = new List<PaymentHistory>();
-
     public virtual SalesPerson SalesPerson { get; set; }
-
     public virtual WarrantyRegistration WarrantyRegistration { get; set; }
 }
