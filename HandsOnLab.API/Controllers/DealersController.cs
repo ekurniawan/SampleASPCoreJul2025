@@ -21,5 +21,58 @@ namespace HandsOnLab.API.Controllers
             var dealers = _dealerBL.GetDealers();
             return Ok(dealers);
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<DealerDTO> GetDealer(int id)
+        {
+            var dealer = _dealerBL.GetById(id);
+            if (dealer == null)
+            {
+                return NotFound();
+            }
+            return Ok(dealer);
+        }
+
+        [HttpPost]
+        public ActionResult<DealerDTO> CreateDealer(DealerInsertDTO dealerInsertDTO)
+        {
+            if (dealerInsertDTO == null)
+            {
+                return BadRequest("Dealer data is null.");
+            }
+
+            var createdDealer = _dealerBL.AddDealer(dealerInsertDTO);
+            return CreatedAtAction(nameof(GetDealer), new { id = createdDealer.DealerId },
+                 createdDealer);
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<DealerDTO> UpdateDealer(int id, DealerUpdateDTO dealerUpdateDTO)
+        {
+            if (dealerUpdateDTO == null || dealerUpdateDTO.DealerId != id)
+            {
+                return BadRequest("Dealer data is null.");
+            }
+
+            var updatedDealer = _dealerBL.UpdateDealer(dealerUpdateDTO);
+            if (updatedDealer == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedDealer);
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteDealer(int id)
+        {
+            var dealer = _dealerBL.GetById(id);
+            if (dealer == null)
+            {
+                return NotFound();
+            }
+
+            _dealerBL.DeleteDealer(id);
+            return NoContent();
+        }
     }
 }
