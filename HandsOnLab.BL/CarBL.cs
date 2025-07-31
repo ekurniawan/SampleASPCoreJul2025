@@ -98,6 +98,25 @@ public class CarBL : ICarBL
         return carDtos;
     }
 
+    public IEnumerable<CarDTO> GetCarsBySearch(string searchTerm)
+    {
+        var carDtos = new List<CarDTO>();
+        var cars = _carDAL.GetByModel(searchTerm);
+        foreach (var car in cars)
+        {
+            carDtos.Add(new CarDTO
+            {
+                CarId = car.CarId,
+                Model = car.Model,
+                Type = car.Type,
+                BasePrice = car.BasePrice,
+                Color = car.Color,
+                Stock = car.Stock
+            });
+        }
+        return carDtos;
+    }
+
     public CarDTO UpdateCar(CarUpdateDTO carUpdateDto)
     {
         try

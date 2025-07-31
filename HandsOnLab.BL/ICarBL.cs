@@ -10,4 +10,5 @@ public interface ICarBL
     CarDTO AddCar(CarInsertDTO carInsertDto);
     CarDTO UpdateCar(CarUpdateDTO carUpdateDto);
     void DeleteCar(int id);
+    IEnumerable<CarDTO> GetCarsBySearch(string searchTerm);
 }

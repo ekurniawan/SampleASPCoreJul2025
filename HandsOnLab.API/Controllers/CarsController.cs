@@ -33,6 +33,18 @@ namespace HandsOnLab.API.Controllers
             return Ok(car);
         }
 
+        [HttpGet("BySearch")]
+        public ActionResult<IEnumerable<CarDTO>> GetCarsBySearch(string search)
+        {
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return BadRequest("Search term cannot be empty.");
+            }
+
+            var cars = _carBL.GetCarsBySearch(search);
+            return Ok(cars);
+        }
+
         //insert
         [HttpPost]
         public ActionResult<CarDTO> AddCar(CarInsertDTO carInsertDto)
