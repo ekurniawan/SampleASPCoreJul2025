@@ -1,15 +1,19 @@
-using System;
+using AutoMapper;
 using HandsOnLab.BL.DTO;
 using HandsOnLab.DAL;
+using System;
 
 namespace HandsOnLab.BL;
 
 public class DealerCarBL : IDealerCarBL
 {
     private readonly IDealerCar _dealerCaDAL;
-    public DealerCarBL(IDealerCar dealerCarDAL)
+    private readonly IMapper _mapper;
+
+    public DealerCarBL(IDealerCar dealerCarDAL, IMapper mapper)
     {
         _dealerCaDAL = dealerCarDAL;
+        _mapper = mapper;
     }
 
     public DealerCarDTO AddDealerCar(DealerCarInsertDTO dealerCarInsertDTO)
@@ -24,7 +28,11 @@ public class DealerCarBL : IDealerCarBL
 
     public IEnumerable<DealerCarDTO> GetAllDealerCars()
     {
-        List<DealerCarDTO> dealerCarDTOs = new List<DealerCarDTO>();
+        var dealerCars = _dealerCaDAL.GetAll();
+        var dealerCarDTOs = _mapper.Map<IEnumerable<DealerCarDTO>>(dealerCars);
+        return dealerCarDTOs;
+
+        /*List<DealerCarDTO> dealerCarDTOs = new List<DealerCarDTO>();
         var dealerCars = _dealerCaDAL.GetAll();
         foreach (var dealerCar in dealerCars)
         {
@@ -47,7 +55,7 @@ public class DealerCarBL : IDealerCarBL
             };
             dealerCarDTOs.Add(dealerCarDTO);
         }
-        return dealerCarDTOs;
+        return dealerCarDTOs;*/
     }
 
     public DealerCarDTO GetDealerCarById(int id)

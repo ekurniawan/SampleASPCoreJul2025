@@ -18,7 +18,7 @@ public class DealerCarDTO
 
     public double? FeePercent { get; set; }
 
-    public virtual CarDTO CarDTO { get; set; }
+    public CarDTO Car { get; set; } = null!;
 
-    public virtual DealerDTO DealerDTO { get; set; }
+    public DealerDTO Dealer { get; set; } = null!;
 }
