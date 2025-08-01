@@ -40,5 +40,50 @@ namespace HandsOnLab.WebFormClient.Servives
                 throw new Exception($"{ex.Message}");
             }
         }
+
+        public async Task<Car> GetCar(int id)
+        {
+            try
+            {
+                var response = await httpClient.GetAsync($"/api/Cars/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var car = await response.Content.ReadAsStringAsync();
+                    Car carObj = JsonConvert.DeserializeObject<Car>(car);
+                    return carObj;
+                }
+                else
+                {
+                    throw new Exception("Error fetching car data");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
+        }
+
+        public async Task<Car> AddCar(Car car)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(car);
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync("/api/Cars", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var addedCar = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Car>(addedCar);
+                }
+                else
+                {
+                    throw new Exception("Error adding car");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
+        }
     }
 }
