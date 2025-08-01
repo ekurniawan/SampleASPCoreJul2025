@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using HandsOnLab.BO;
+﻿using HandsOnLab.BO;
+using Microsoft.EntityFrameworkCore;
 
 namespace HandsOnLab.DAL
 {
@@ -15,6 +15,13 @@ namespace HandsOnLab.DAL
         {
             try
             {
+                var existingCarAndDealer = _context.DealerCars
+                    .Any(dc => dc.CarId == item.CarId && dc.DealerId == item.DealerId);
+                if (existingCarAndDealer)
+                {
+                    throw new ArgumentException($"A dealer car with CarId {item.CarId} and DealerId {item.DealerId} already exists.");
+                }
+
                 _context.DealerCars.Add(item);
                 _context.SaveChanges();
                 return item;

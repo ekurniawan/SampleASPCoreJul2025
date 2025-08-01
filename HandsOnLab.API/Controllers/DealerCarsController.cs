@@ -27,27 +27,81 @@ namespace HandsOnLab.API.Controllers
 
         // GET api/<DealerCarsController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<DealerCarDTO> Get(int id)
         {
-            return "value";
+            var dealerCar = _dealerCarBL.GetDealerCarById(id);
+            if (dealerCar == null)
+            {
+                return NotFound($"DealerCar with ID {id} not found.");
+            }
+            return Ok(dealerCar);
         }
 
         // POST api/<DealerCarsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<DealerCarDTO> Post(DealerCarInsertDTO dealerCarInsertDTO)
         {
+            try
+            {
+                if (dealerCarInsertDTO == null)
+                {
+                    throw new ArgumentNullException(nameof(dealerCarInsertDTO), "DealerCarInsertDTO cannot be null.");
+                }
+                var addedDealerCar = _dealerCarBL.AddDealerCar(dealerCarInsertDTO);
+                if (addedDealerCar == null)
+                {
+                    return BadRequest("Failed to add the dealer car.");
+                }
+                return CreatedAtAction(nameof(Get), new { id = addedDealerCar.DealerCarId }, addedDealerCar);
+            }
+            catch (ArgumentException aEx)
+            {
+                return BadRequest($"Error adding dealer car: {aEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error adding dealer car: {ex.Message}");
+            }
         }
 
         // PUT api/<DealerCarsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<DealerCarDTO> Put(int id, DealerCarUpdateDTO dealerCarUpdateDTO)
         {
+            try
+            {
+                var updateCar = _dealerCarBL.GetDealerCarById(id);
+                if (updateCar == null)
+                {
+                    return NotFound($"DealerCar with ID {id} not found.");
+                }
+                dealerCarUpdateDTO.DealerCarId = id; // Ensure the ID is set for the update
+                var updatedDealerCar = _dealerCarBL.UpdateDealerCar(dealerCarUpdateDTO);
+                if (updatedDealerCar == null)
+                {
+                    return BadRequest("Failed to update the dealer car.");
+                }
+                return Ok(updatedDealerCar);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error updating dealer car with ID {id}: {ex.Message}");
+            }
         }
 
         // DELETE api/<DealerCarsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
+            try
+            {
+                _dealerCarBL.DeleteDealerCar(id);
+                return Ok($"Dealer car with ID {id} deleted successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error deleting dealer car with ID {id}: {ex.Message}");
+            }
         }
     }
 }

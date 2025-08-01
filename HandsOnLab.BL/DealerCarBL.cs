@@ -1,5 +1,6 @@
 using AutoMapper;
 using HandsOnLab.BL.DTO;
+using HandsOnLab.BO;
 using HandsOnLab.DAL;
 using System;
 
@@ -18,12 +19,38 @@ public class DealerCarBL : IDealerCarBL
 
     public DealerCarDTO AddDealerCar(DealerCarInsertDTO dealerCarInsertDTO)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var newDealerCar = _mapper.Map<DealerCar>(dealerCarInsertDTO);
+            var addedDealerCar = _dealerCaDAL.Create(newDealerCar);
+            if (addedDealerCar == null)
+            {
+                throw new Exception("Failed to add the dealer car.");
+            }
+            var dealerCarDTO = _mapper.Map<DealerCarDTO>(addedDealerCar);
+            return dealerCarDTO;
+        }
+        catch (ArgumentException aEx)
+        {
+            throw new ArgumentException(aEx.Message);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An error occurred while adding the dealer car.", ex);
+        }
     }
 
     public void DeleteDealerCar(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _dealerCaDAL.Delete(id);
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception(ex.Message);
+        }
     }
 
     public IEnumerable<DealerCarDTO> GetAllDealerCars()
@@ -60,11 +87,31 @@ public class DealerCarBL : IDealerCarBL
 
     public DealerCarDTO GetDealerCarById(int id)
     {
-        throw new NotImplementedException();
+        var dealerCar = _dealerCaDAL.GetById(id);
+        if (dealerCar == null)
+        {
+            throw new ArgumentException($"DealerCar with ID {id} not found.");
+        }
+        var dealerCarDTO = _mapper.Map<DealerCarDTO>(dealerCar);
+        return dealerCarDTO;
     }
 
     public DealerCarDTO UpdateDealerCar(DealerCarUpdateDTO dealerCarUpdateDTO)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var updateDealerCar = _mapper.Map<DealerCar>(dealerCarUpdateDTO);
+            var updatedDealerCar = _dealerCaDAL.Update(updateDealerCar);
+            if (updatedDealerCar == null)
+            {
+                throw new Exception("Failed to update the dealer car.");
+            }
+            var dealerCarDTO = _mapper.Map<DealerCarDTO>(updatedDealerCar);
+            return dealerCarDTO;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 }
