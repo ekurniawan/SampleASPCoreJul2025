@@ -1,4 +1,5 @@
-﻿using HandsOnLab.WebFormClient.Servives;
+﻿using HandsOnLab.WebFormClient.Models;
+using HandsOnLab.WebFormClient.Servives;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace HandsOnLab.WebFormClient
             var car = await _carsService.GetCar(carId);
             if (car != null)
             {
+                hfCarId.Value = car.CarId.ToString();
                 txtModel.Text = car.Model;
                 txtType.Text = car.Type;
                 txtBasePrice.Text = car.BasePrice.HasValue ? car.BasePrice.Value.ToString("N0") : string.Empty;
@@ -26,20 +28,87 @@ namespace HandsOnLab.WebFormClient
             }
         }
 
+        private void ClearForms()
+        {
+            hfCarId.Value = string.Empty;
+            txtModel.Text = string.Empty;
+            txtType.Text = string.Empty;
+            txtBasePrice.Text = string.Empty;
+            txtColor.Text = string.Empty;
+            txtStock.Text = string.Empty;
+            txtModel.Focus();
+
+            btnAdd.Enabled = false;
+        }
+
+        private async Task FillGridView()
+        {
+            gvCars.DataSource = await _carsService.GetCars();
+            gvCars.DataBind();
+        }
+
         protected async void Page_Load(object sender, EventArgs e)
         {
-            var carId = Request.QueryString["CarId"];
-            if (!string.IsNullOrEmpty(carId))
-            {
-                await FillForms(int.Parse(carId));
-            }
-
             if (!IsPostBack)
             {
-                var carService = new CarsServices();
-                gvCars.DataSource = await carService.GetCars();
-                gvCars.DataBind();
+                var carId = Request.QueryString["CarId"];
+                if (!string.IsNullOrEmpty(carId))
+                {
+                    await FillForms(int.Parse(carId));
+                }
+
+                await FillGridView();
             }
+        }
+
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            ClearForms();
+        }
+
+        protected async void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //add car
+                if (!btnAdd.Enabled)
+                {
+                    var newCar = new CarInsert
+                    {
+                        Model = txtModel.Text,
+                        Type = txtType.Text,
+                        BasePrice = Convert.ToDouble(txtBasePrice.Text),
+                        Color = txtColor.Text,
+                        Stock = Convert.ToInt32(txtStock.Text)
+                    };
+                    var result = await _carsService.AddCar(newCar);
+                    btnAdd.Enabled = true;
+                    ltMessage.Text = $"<span class='alert alert-success'>Add Car {result.Model} success !</span>";
+                }
+                else //update car
+                {
+                    var updateCar = new CarUpdate
+                    {
+                        CarId = int.Parse(hfCarId.Value),
+                        Model = txtModel.Text,
+                        Type = txtType.Text,
+                        BasePrice = Convert.ToDouble(txtBasePrice.Text),
+                        Color = txtColor.Text,
+                        Stock = Convert.ToInt32(txtStock.Text)
+                    };
+                    var result = await _carsService.UpdateCar(updateCar);
+                    ltMessage.Text = $"<span class='alert alert-success'>Update Car {result.Model} success !</span>";
+                }
+            }
+            catch (Exception ex)
+            {
+                ltMessage.Text = $"<span class='alert alert-danger'>Error: {ex.Message}</span>";
+            }
+            finally
+            {
+                await FillGridView();
+            }
+
         }
     }
 }

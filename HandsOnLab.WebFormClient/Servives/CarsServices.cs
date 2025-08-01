@@ -63,11 +63,11 @@ namespace HandsOnLab.WebFormClient.Servives
             }
         }
 
-        public async Task<Car> AddCar(Car car)
+        public async Task<Car> AddCar(CarInsert carInsert)
         {
             try
             {
-                var json = JsonConvert.SerializeObject(car);
+                var json = JsonConvert.SerializeObject(carInsert);
                 var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync("/api/Cars", content);
                 if (response.IsSuccessStatusCode)
@@ -78,6 +78,29 @@ namespace HandsOnLab.WebFormClient.Servives
                 else
                 {
                     throw new Exception("Error adding car");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
+        }
+
+        public async Task<Car> UpdateCar(CarUpdate carUpdate)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(carUpdate);
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+                var response = await httpClient.PutAsync($"/api/Cars/{carUpdate.CarId}", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var updatedCar = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Car>(updatedCar);
+                }
+                else
+                {
+                    throw new Exception("Error updating car");
                 }
             }
             catch (Exception ex)

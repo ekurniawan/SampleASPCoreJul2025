@@ -5,8 +5,11 @@
     <main>
         <section class="row" aria-labelledby="aspnetTitle">
             <h3 id="aspnetTitle">List Of Cars</h3>
-        </section><br />
+        </section>
+        <br />
         <div class="row">
+            <asp:Literal ID="ltMessage" runat="server" /><br />
+            <asp:HiddenField ID="hfCarId" runat="server" />
             <div class="col-md-4">
                 <div class="mb-3 mt-3">
                     <label for="Model" class="form-label">Model :</label>
@@ -28,7 +31,9 @@
                     <label for="txtStock" class="form-label">Stock :</label>
                     <asp:TextBox ID="txtStock" runat="server" CssClass="form-control" />
                 </div>
-                <asp:Button ID="btnAdd" runat="server" Text="Add" CssClass="btn btn-primary" />
+                <asp:Button ID="btnAdd" runat="server" Text="Add" CssClass="btn btn-primary btn-sm" OnClick="btnAdd_Click" />
+                <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-warning btn-sm" OnClick="btnSave_Click" />
+                <asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger btn-sm" />
             </div>
 
             <div class="col-md-8">
@@ -42,8 +47,7 @@
                         <asp:BoundColumn DataField="Stock" HeaderText="Stock" DataFormatString="{0:N0}" />
                         <asp:TemplateColumn>
                             <ItemTemplate>
-                                <a class="btn btn-primary btn-sm"  runat="server" href='<%# "Default.aspx?CarId=" + Eval("CarId") %>'>Edit</a>
-                                <a class="btn btn-danger btn-sm"  runat="server" href='<%# "Default.aspx?CarId=" + Eval("CarId") %>'>Delete</a>
+                                <a class="btn btn-primary btn-sm" runat="server" href='<%# "Default.aspx?CarId=" + Eval("CarId") %>'>select</a>
                             </ItemTemplate>
                         </asp:TemplateColumn>
                     </Columns>
