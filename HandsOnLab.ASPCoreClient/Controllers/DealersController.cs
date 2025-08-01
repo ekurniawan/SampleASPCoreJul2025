@@ -1,4 +1,5 @@
-﻿using HandsOnLab.ASPCoreClient.Services;
+﻿using HandsOnLab.ASPCoreClient.Models;
+using HandsOnLab.ASPCoreClient.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,11 +35,19 @@ namespace HandsOnLab.ASPCoreClient.Controllers
         // POST: DealersController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(DealerInsert dealerInsert)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    var dealer = await _dealerService.CreateDealerAsync(dealerInsert);
+                    if (dealer != null)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                return View(dealerInsert);
             }
             catch
             {

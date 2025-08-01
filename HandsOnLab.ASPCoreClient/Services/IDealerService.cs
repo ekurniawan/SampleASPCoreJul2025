@@ -6,8 +6,8 @@ namespace HandsOnLab.ASPCoreClient.Services
     {
         Task<IEnumerable<Dealer>> GetDealersAsync();
         Task<Dealer> GetDealerByIdAsync(int id);
-        Task<Dealer> CreateDealerAsync(Dealer dealer);
-        Task<Dealer> UpdateDealerAsync(Dealer dealer);
+        Task<Dealer> CreateDealerAsync(DealerInsert dealerInsert);
+        Task<Dealer> UpdateDealerAsync(DealerUpdate dealerUpdate);
         Task DeleteDealerAsync(int id);
     }
 }

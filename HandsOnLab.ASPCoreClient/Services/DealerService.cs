@@ -12,19 +12,68 @@ namespace HandsOnLab.ASPCoreClient.Services
             _httpClient.BaseAddress = new Uri("https://localhost:7095/");
         }
 
-        public async Task<Dealer> CreateDealerAsync(Dealer dealer)
+        public async Task<Dealer> CreateDealerAsync(DealerInsert dealerInsert)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var jsonContent = JsonSerializer.Serialize(dealerInsert);
+                var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("api/Dealers", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<Dealer>(data);
+                    if (result == null)
+                    {
+                        throw new ArgumentException("Dealer creation failed, no data returned.");
+                    }
+                    return result;
+                }
+                else
+                {
+                    throw new HttpRequestException($"Error creating dealer: {response.ReasonPhrase}");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task DeleteDealerAsync(int id)
+        public async Task DeleteDealerAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var response = await _httpClient.DeleteAsync($"api/Dealers/{id}");
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException($"Error deleting dealer: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<Dealer> GetDealerByIdAsync(int id)
+        public async Task<Dealer> GetDealerByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var response = await _httpClient.GetAsync($"api/Dealers/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var dealer = JsonSerializer.Deserialize<Dealer>(data);
+                if (dealer == null)
+                {
+                    throw new ArgumentException($"Dealer id: {id} not found");
+                }
+                return dealer;
+            }
+            else
+            {
+                throw new HttpRequestException($"Error fetching dealer: {response.ReasonPhrase}");
+            }
         }
 
         public async Task<IEnumerable<Dealer>> GetDealersAsync()
@@ -42,9 +91,32 @@ namespace HandsOnLab.ASPCoreClient.Services
             }
         }
 
-        public Task<Dealer> UpdateDealerAsync(Dealer dealer)
+        public async Task<Dealer> UpdateDealerAsync(DealerUpdate dealerUpdate)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var jsonContent = JsonSerializer.Serialize(dealerUpdate);
+                var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync($"api/Dealers/{dealerUpdate.DealerId}", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    var result = JsonSerializer.Deserialize<Dealer>(data);
+                    if (result == null)
+                    {
+                        throw new ArgumentException("Dealer update failed, no data returned.");
+                    }
+                    return result;
+                }
+                else
+                {
+                    throw new HttpRequestException($"Error updating dealer: {response.ReasonPhrase}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
