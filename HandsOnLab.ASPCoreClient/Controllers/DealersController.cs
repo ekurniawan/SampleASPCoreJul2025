@@ -56,19 +56,43 @@ namespace HandsOnLab.ASPCoreClient.Controllers
         }
 
         // GET: DealersController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var dealer = await _dealerService.GetDealerByIdAsync(id);
+            if (dealer == null)
+            {
+                return NotFound();
+            }
+            var dealerUpdate = new DealerUpdate
+            {
+                DealerId = dealer.DealerId,
+                Name = dealer.Name,
+                Address = dealer.Address,
+                PhoneNumber = dealer.PhoneNumber,
+                Email = dealer.Email,
+                Status = dealer.Status
+            };
+
+            return View(dealerUpdate);
         }
 
         // POST: DealersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(int id, DealerUpdate dealerUpdate)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    dealerUpdate.DealerId = id;
+                    var updatedDealer = await _dealerService.UpdateDealerAsync(dealerUpdate);
+                    if (updatedDealer != null)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+                return View(dealerUpdate);
             }
             catch
             {
@@ -77,18 +101,25 @@ namespace HandsOnLab.ASPCoreClient.Controllers
         }
 
         // GET: DealersController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            var dealer = await _dealerService.GetDealerByIdAsync(id);
+            if (dealer == null)
+            {
+                return NotFound();
+            }
+
+            return View(dealer);
         }
 
         // POST: DealersController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id, IFormCollection collection)
         {
             try
             {
+                await _dealerService.DeleteDealerAsync(id);
                 return RedirectToAction(nameof(Index));
             }
             catch
