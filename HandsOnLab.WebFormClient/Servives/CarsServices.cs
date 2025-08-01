@@ -108,5 +108,21 @@ namespace HandsOnLab.WebFormClient.Servives
                 throw new Exception($"{ex.Message}");
             }
         }
+
+        public async Task DeleteCar(int id)
+        {
+            try
+            {
+                var response = await httpClient.DeleteAsync($"/api/Cars/{id}");
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception("Error deleting car");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
+        }
     }
 }

@@ -71,7 +71,7 @@ namespace HandsOnLab.WebFormClient
             try
             {
                 //add car
-                if (!btnAdd.Enabled)
+                if (!btnAdd.Enabled && txtModel.Text == string.Empty)
                 {
                     var newCar = new CarInsert
                     {
@@ -83,6 +83,7 @@ namespace HandsOnLab.WebFormClient
                     };
                     var result = await _carsService.AddCar(newCar);
                     btnAdd.Enabled = true;
+                    ClearForms();
                     ltMessage.Text = $"<span class='alert alert-success'>Add Car {result.Model} success !</span>";
                 }
                 else //update car
@@ -109,6 +110,23 @@ namespace HandsOnLab.WebFormClient
                 await FillGridView();
             }
 
+        }
+
+        protected async void btnDelete_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var carId = int.Parse(hfCarId.Value);
+                await _carsService.DeleteCar(carId);
+                ltMessage.Text = $"<span class='alert alert-success'>Delete Car {carId} success !</span>";
+
+                await FillGridView();
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }
