@@ -11,12 +11,17 @@ namespace HandsOnLab.DAL
             _context = context;
         }
 
+        private bool IsExistDealerAndCar(int carId, int dealerId)
+        {
+            return _context.DealerCars.Any(dc => dc.CarId == carId && dc.DealerId == dealerId);
+        }
+
         public DealerCar Create(DealerCar item)
         {
             try
             {
-                var existingCarAndDealer = _context.DealerCars
-                    .Any(dc => dc.CarId == item.CarId && dc.DealerId == item.DealerId);
+                var existingCarAndDealer = IsExistDealerAndCar(item.CarId, item.DealerId);
+
                 if (existingCarAndDealer)
                 {
                     throw new ArgumentException($"A dealer car with CarId {item.CarId} and DealerId {item.DealerId} already exists.");
@@ -26,10 +31,15 @@ namespace HandsOnLab.DAL
                 _context.SaveChanges();
                 return item;
             }
+            catch (ArgumentException aEx)
+            {
+                // Log the exception (not implemented here)
+                throw new ArgumentException($"{aEx.Message}");
+            }
             catch (Exception ex)
             {
                 // Log the exception (not implemented here)
-                throw new Exception("An error occurred while creating the dealer car.", ex);
+                throw new Exception("An error occurred while adding the dealer car.", ex);
             }
         }
 
@@ -96,7 +106,18 @@ namespace HandsOnLab.DAL
                 var existingDealerCar = GetById(item.DealerCarId);
                 if (existingDealerCar == null)
                 {
-                    throw new Exception($"DealerCar with ID {item.DealerCarId} not found.");
+                    throw new ArgumentException($"DealerCar with ID {item.DealerCarId} not found.");
+                }
+                else
+                {
+                    if (existingDealerCar.CarId != item.CarId && existingDealerCar.DealerId != item.DealerId)
+                    {
+                        var existingCarAndDealer = IsExistDealerAndCar(item.CarId, item.DealerId);
+                        if (existingCarAndDealer)
+                        {
+                            throw new ArgumentException($"A dealer car with CarId {item.CarId} and DealerId {item.DealerId} already exists.");
+                        }
+                    }
                 }
 
                 existingDealerCar.CarId = item.CarId;
@@ -108,6 +129,11 @@ namespace HandsOnLab.DAL
 
                 _context.SaveChanges();
                 return existingDealerCar;
+            }
+            catch (ArgumentException aEx)
+            {
+                // Log the exception (not implemented here)
+                throw new ArgumentException($"{aEx.Message}");
             }
             catch (Exception ex)
             {
