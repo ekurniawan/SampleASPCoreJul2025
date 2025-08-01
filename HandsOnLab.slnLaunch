@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "HandsOnLab.API\\HandsOnLab.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "HandsOnLab.WebFormClient\\HandsOnLab.WebFormClient.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "HandsOnLab.ASPCoreClient\\HandsOnLab.ASPCoreClient.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
