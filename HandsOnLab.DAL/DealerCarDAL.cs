@@ -110,7 +110,7 @@ namespace HandsOnLab.DAL
                 }
                 else
                 {
-                    if (existingDealerCar.CarId != item.CarId && existingDealerCar.DealerId != item.DealerId)
+                    if (existingDealerCar.CarId != item.CarId || existingDealerCar.DealerId != item.DealerId)
                     {
                         var existingCarAndDealer = IsExistDealerAndCar(item.CarId, item.DealerId);
                         if (existingCarAndDealer)
