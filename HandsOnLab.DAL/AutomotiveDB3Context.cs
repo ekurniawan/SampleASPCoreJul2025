@@ -4,14 +4,20 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using HandsOnLab.BO;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace HandsOnLab.DAL;
 
-public partial class AutomotiveDB3Context : DbContext
+public partial class AutomotiveDB3Context : IdentityDbContext
 {
     public AutomotiveDB3Context(DbContextOptions<AutomotiveDB3Context> options)
         : base(options)
     {
+    }
+
+    public AutomotiveDB3Context()
+    {
+
     }
 
     public virtual DbSet<Agreement> Agreements { get; set; }
@@ -40,8 +46,14 @@ public partial class AutomotiveDB3Context : DbContext
 
     public virtual DbSet<WarrantyRegistration> WarrantyRegistrations { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer("Data Source=.\\;Initial Catalog=AutomotiveDB3;Integrated Security=True;TrustServerCertificate=True");
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<Agreement>(entity =>
         {
             entity.HasKey(e => e.AgreementId).HasName("PK__Agreemen__0A309D232910C534");

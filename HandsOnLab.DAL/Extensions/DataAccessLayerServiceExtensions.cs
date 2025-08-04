@@ -1,7 +1,7 @@
-using Microsoft.Extensions.DependencyInjection;
 using HandsOnLab.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HandsOnLab.DAL.Extensions;
 
