@@ -4,7 +4,7 @@ namespace HandsOnLab.ASPCoreClient.Services
 {
     public interface IDealerService
     {
-        Task<IEnumerable<Dealer>> GetDealersAsync();
+        Task<IEnumerable<Dealer>> GetDealersAsync(string token = "");
         Task<Dealer> GetDealerByIdAsync(int id);
         Task<Dealer> CreateDealerAsync(DealerInsert dealerInsert);
         Task<Dealer> UpdateDealerAsync(DealerUpdate dealerUpdate);

@@ -16,15 +16,9 @@ namespace HandsOnLab.WebFormClient.Servives
         {
             httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://localhost:7095");
-            //add header bearer
-            //httpClient.DefaultRequestHeaders.Authorization =
-            //    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer",
-            //    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1ZGlAZ21haWwuY29tIiwibmJmIjoxNzU0Mjg5MzE4LCJleHAiOjE3NTQyOTI5MTgsImlhdCI6MTc1NDI4OTMxOH0.LfsXUugl3kDysMtV3LP2uMfOrkp0-h0NTlfqTTrfb4M"); // Replace with your actual token
-
 
             httpClient.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-
         }
 
         public async Task<List<Car>> GetCars()

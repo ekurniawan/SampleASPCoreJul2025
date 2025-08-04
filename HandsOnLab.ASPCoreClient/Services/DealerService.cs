@@ -1,4 +1,5 @@
 ﻿using HandsOnLab.ASPCoreClient.Models;
+using NuGet.Common;
 using System.Text.Json;
 
 namespace HandsOnLab.ASPCoreClient.Services
@@ -10,6 +11,8 @@ namespace HandsOnLab.ASPCoreClient.Services
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             _httpClient.BaseAddress = new Uri("https://localhost:7095/");
+
+
         }
 
         public async Task<Dealer> CreateDealerAsync(DealerInsert dealerInsert)
@@ -76,8 +79,11 @@ namespace HandsOnLab.ASPCoreClient.Services
             }
         }
 
-        public async Task<IEnumerable<Dealer>> GetDealersAsync()
+        public async Task<IEnumerable<Dealer>> GetDealersAsync(string token = "")
         {
+            _httpClient.DefaultRequestHeaders.Authorization =
+        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
             var response = await _httpClient.GetAsync("api/Dealers");
             if (response.IsSuccessStatusCode)
             {

@@ -5,8 +5,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+//add session
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+    options.Cookie.HttpOnly = true; // Make the session cookie HTTP only
+    options.Cookie.IsEssential = true; // Make the session cookie essential
+});
+
 //add services
 builder.Services.AddHttpClient<IDealerService, DealerService>();
+builder.Services.AddHttpClient<IAccount, AccountService>();
 
 var app = builder.Build();
 
@@ -21,7 +31,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+
 app.UseAuthorization();
+app.UseSession();
+
 
 app.MapStaticAssets();
 

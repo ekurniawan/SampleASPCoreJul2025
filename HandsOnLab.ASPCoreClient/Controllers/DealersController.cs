@@ -16,7 +16,17 @@ namespace HandsOnLab.ASPCoreClient.Controllers
         // GET: DealersController
         public async Task<ActionResult> Index()
         {
-            var models = await _dealerService.GetDealersAsync();
+            //check login
+            var account = HttpContext.Session.GetString("account");
+            if (string.IsNullOrEmpty(account))
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
+            //convert to UserViewModel
+            var user = System.Text.Json.JsonSerializer.Deserialize<UserViewModel>(account);
+            var token = user?.Token.ToString();
+
+            var models = await _dealerService.GetDealersAsync(token);
             return View(models);
         }
 
