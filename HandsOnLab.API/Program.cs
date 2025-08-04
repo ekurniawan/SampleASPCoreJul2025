@@ -1,7 +1,8 @@
-using HandsOnLab.DAL;
-using Microsoft.EntityFrameworkCore;
 using HandsOnLab.BL.Extensions;
 using HandsOnLab.BL.Profiles;
+using HandsOnLab.DAL;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,18 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+//{
+//    options.Password.RequireDigit = false;
+//    options.Password.RequiredLength = 6;
+//    options.Password.RequireLowercase = false;
+//    options.Password.RequireNonAlphanumeric = false;
+//    options.Password.RequireUppercase = false;
+//}).AddEntityFrameworkStores<AutomotiveDB3Context>();
 
-
-//add entity framework
-builder.Services.AddDbContext<AutomotiveDB3Context>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AutomotiveDBConnectionString")));
+////add entity framework
+//builder.Services.AddDbContext<AutomotiveDB3Context>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("AutomotiveDBConnectionString")));
 
 
 //add business layer services

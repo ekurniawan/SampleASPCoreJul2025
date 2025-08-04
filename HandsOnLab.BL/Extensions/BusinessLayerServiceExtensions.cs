@@ -1,8 +1,8 @@
-using Microsoft.Extensions.DependencyInjection;
 using HandsOnLab.BL;
+using HandsOnLab.BL.Profiles;
 using HandsOnLab.DAL;
 using HandsOnLab.DAL.Extensions;
-using HandsOnLab.BL.Profiles;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HandsOnLab.BL.Extensions;
 
@@ -20,6 +20,7 @@ public static class BusinessLayerServiceExtensions
         services.AddScoped<ICarBL, CarBL>();
         services.AddScoped<IDealerBL, DealerBL>();
         services.AddScoped<IDealerCarBL, DealerCarBL>();
+        services.AddScoped<IUsmanBL, UsmanBL>();
 
         return services;
     }

@@ -46,10 +46,10 @@ public partial class AutomotiveDB3Context : IdentityDbContext
 
     public virtual DbSet<WarrantyRegistration> WarrantyRegistrations { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Data Source=.\\;Initial Catalog=AutomotiveDB;Integrated Security=True;TrustServerCertificate=True");
-    }
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    optionsBuilder.UseSqlServer("Data Source=.\\;Initial Catalog=AutomotiveDB;Integrated Security=True;TrustServerCertificate=True");
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
