@@ -1,6 +1,6 @@
-using System;
-using Microsoft.EntityFrameworkCore;
 using HandsOnLab.BO;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace HandsOnLab.DAL;
 

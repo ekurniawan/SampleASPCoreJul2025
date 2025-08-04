@@ -1,19 +1,22 @@
 ﻿using HandsOnLab.BL.DTO;
+using HandsOnLab.BL.Helpers;
 using HandsOnLab.DAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HandsOnLab.BL
 {
     public class UsmanBL : IUsmanBL
     {
         private readonly IUsman _usmanDAL;
-        public UsmanBL(IUsman usmanDAL)
+        private readonly AppSettings _appSettings;
+
+        public UsmanBL(IUsman usmanDAL, IOptions<AppSettings> appSettings)
         {
             _usmanDAL = usmanDAL;
+            _appSettings = appSettings.Value;
         }
 
         public Task<bool> AddUserToRoleAsync(string email, string roleName)
@@ -39,14 +42,31 @@ namespace HandsOnLab.BL
                 {
                     return null; // User not found or invalid password
                 }
-                // Here you would typically generate a JWT token or similar for the user
-                // For simplicity, we are returning a dummy token
-                var token = "dummy_token"; // Replace with actual token generation logic
-                return new UserWithTokenDTO
+
+                //add claim
+                List<Claim> claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.Email, user.Email));
+
+                var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new System.Security.Claims.ClaimsIdentity(claims),
+                    Expires = DateTime.UtcNow.AddHours(1),
+                    SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                        new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(key),
+                        Microsoft.IdentityModel.Tokens.SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+
+                var result = new UserWithTokenDTO
                 {
                     Email = user.Email,
-                    Token = token
+                    Token = tokenHandler.WriteToken(token)
                 };
+
+                return result;
             }
             catch (Exception ex)
             {
