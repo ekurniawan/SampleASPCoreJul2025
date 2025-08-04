@@ -54,7 +54,6 @@ namespace HandsOnLab.WebFormClient
             if (Session["username"] == null)
             {
                 Response.Redirect("LoginForm.aspx?ReturnUrl=Default.aspx", false);
-                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {

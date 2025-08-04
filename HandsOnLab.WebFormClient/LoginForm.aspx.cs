@@ -38,7 +38,7 @@ namespace HandsOnLab.WebFormClient
                     ltMessage.Text = $"<span class='alert alert-success'>Login successful! Welcome {result.Email} - {result.Token}</span>";
 
                     Response.Redirect("Default.aspx?CarId=1", false);
-                    Context.ApplicationInstance.CompleteRequest();
+                    //Context.ApplicationInstance.CompleteRequest();
 
                     //UserViewModel user = (UserViewModel)Session["username"];
 
