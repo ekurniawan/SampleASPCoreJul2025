@@ -11,7 +11,16 @@ namespace HandsOnLab.WebFormClient
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["username"] == null)
+            {
+                hlLogout.Text = "Login";
+                hlLogout.NavigateUrl = "LoginForm.aspx?ReturnUrl=Default.aspx";
+            }
+            else
+            {
+                hlLogout.Text = "Logout";
+                hlLogout.NavigateUrl = "Logout.aspx";
+            }
         }
     }
 }

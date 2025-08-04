@@ -12,7 +12,7 @@ namespace HandsOnLab.WebFormClient
 {
     public partial class _Default : Page
     {
-        private CarsServices _carsService = new CarsServices();
+        private CarsServices _carsService;
 
         private async Task FillForms(int carId)
         {
@@ -49,15 +49,28 @@ namespace HandsOnLab.WebFormClient
 
         protected async void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                var carId = Request.QueryString["CarId"];
-                if (!string.IsNullOrEmpty(carId))
-                {
-                    await FillForms(int.Parse(carId));
-                }
 
-                await FillGridView();
+            //check session username already exists async form
+            if (Session["username"] == null)
+            {
+                Response.Redirect("LoginForm.aspx?ReturnUrl=Default.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            else
+            {
+                var user = (UserViewModel)Session["username"];
+                _carsService = new CarsServices(user.Token);
+
+                if (!IsPostBack)
+                {
+                    var carId = Request.QueryString["CarId"];
+                    if (!string.IsNullOrEmpty(carId))
+                    {
+                        await FillForms(int.Parse(carId));
+                    }
+
+                    await FillGridView();
+                }
             }
         }
 
