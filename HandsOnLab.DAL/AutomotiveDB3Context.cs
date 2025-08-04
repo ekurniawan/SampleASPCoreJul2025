@@ -48,7 +48,7 @@ public partial class AutomotiveDB3Context : IdentityDbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=.\\;Initial Catalog=AutomotiveDB3;Integrated Security=True;TrustServerCertificate=True");
+        optionsBuilder.UseSqlServer("Data Source=.\\;Initial Catalog=AutomotiveDB;Integrated Security=True;TrustServerCertificate=True");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -353,7 +353,63 @@ public partial class AutomotiveDB3Context : IdentityDbContext
         });
 
         OnModelCreatingPartial(modelBuilder);
+
+        //// Car
+        //modelBuilder.Entity<Car>().HasData(
+        //    new Car { CarId = 1, Model = "Xpander Sport", Type = "MPV", BasePrice = 255000000, Color = "Hitam", Stock = 5 },
+        //    new Car { CarId = 2, Model = "L300 2025", Type = "Commercial", BasePrice = 232500000, Color = "Putih", Stock = 30 },
+        //    new Car { CarId = 3, Model = "Pajero", Type = "SUV", BasePrice = 577700000, Color = "Silver", Stock = 25 },
+        //    new Car { CarId = 4, Model = "XForce", Type = "SUV", BasePrice = 450000000, Color = "Merah", Stock = 10 },
+        //    new Car { CarId = 5, Model = "Destinator Dynamic", Type = "SUV", BasePrice = 600000000, Color = "Orange", Stock = 10 },
+        //    new Car { CarId = 6, Model = "Xpander Cross 2025", Type = "MVP", BasePrice = 300000000, Color = "Hitam", Stock = 10 },
+        //    new Car { CarId = 7, Model = "Destinator Prime", Type = "SUV", BasePrice = 450000000, Color = "Green", Stock = 5 },
+        //    new Car { CarId = 9, Model = "Type Y", Type = "Sedan", BasePrice = 700000000, Color = "Red", Stock = 10 },
+        //    new Car { CarId = 12, Model = "Xpander Ultimate 2025", Type = "MPV", BasePrice = 250000000, Color = "Hitam", Stock = 3 },
+        //    new Car { CarId = 14, Model = "Destinator X", Type = "SUV", BasePrice = 700000000, Color = "Hitam", Stock = 5 }
+        //);
+
+        //// Customer
+        //modelBuilder.Entity<Customer>().HasData(
+        //    new Customer { CustomerId = 1, Name = "Jefri", CardId = "JT123444", Address = "Jl. Maju Terus gg.4 No.7, Jawa Timur", PhoneNumber = "081234567890", Email = "JefriTampang34@gmail.com" },
+        //    new Customer { CustomerId = 2, Name = "Jason", CardId = "DKI10056", Address = "Jl. Kemana Aja IV No.30, Jakarta", PhoneNumber = "081234567891", Email = "JazzJason77@gmail.com" },
+        //    new Customer { CustomerId = 3, Name = "Juliet Romeo", CardId = "MT964903", Address = "Jl. Tapi Mager 2 No.2, Medan", PhoneNumber = "08123488888", Email = "citra@mail.com" },
+        //    new Customer { CustomerId = 4, Name = "Bob", CardId = "BK9837945", Address = "Jl. Kebayoran 8 no.104, Bekasi", PhoneNumber = "08130234289", Email = "Nyeenya3@gmail.com" },
+        //    new Customer { CustomerId = 5, Name = "Budi", CardId = "678976544667", Address = "JL Mangga 12", PhoneNumber = "9988778899", Email = "budi@gmail.com" },
+        //    new Customer { CustomerId = 8, Name = "Cloud", CardId = "88997733", Address = "JL Jeruk 77", PhoneNumber = "445566", Email = "cloud@gmail.com" },
+        //    new Customer { CustomerId = 14, Name = "Anas", CardId = "889988", Address = "JL Salak Pondoh 88", PhoneNumber = "445566", Email = "anas@gmail.com" },
+        //    new Customer { CustomerId = 15, Name = "Anas aja", CardId = "889988", Address = "JL Salak Pondoh 88", PhoneNumber = "445566", Email = "anas@gmail.com" }
+        //);
+
+        //// Dealer
+        //modelBuilder.Entity<Dealer>().HasData(
+        //    new Dealer { DealerId = 1, Name = "Dealer Srikandi", Address = "Jl. Jendral Sudirman", PhoneNumber = "02195633556", Email = "dealersrikandi@gmail.com", Status = 1 },
+        //    new Dealer { DealerId = 2, Name = "Dealer Berlian", Address = "Jl. Gatot Subroto", PhoneNumber = "02106745678", Email = "dealerberlian@mail.com", Status = 1 },
+        //    new Dealer { DealerId = 3, Name = "Dealer Yudha", Address = "Jl. Thamrin", PhoneNumber = "021895363", Email = "dealeryudha@mail.com", Status = 0 },
+        //    new Dealer { DealerId = 5, Name = "Dealer Arjuna", Address = "JL Arjuna 78", PhoneNumber = "021067456865", Email = "dealerarjuna@mail.com", Status = 1 }
+        //);
+
+        //// SalesPerson
+        //modelBuilder.Entity<SalesPerson>().HasData(
+        //    new SalesPerson { SalesId = 1, Name = "Dina", DealerId = 1, PhoneNumber = "081234567001", Email = "dinasrikandi@gmail.com" },
+        //    new SalesPerson { SalesId = 2, Name = "Eko", DealerId = 2, PhoneNumber = "081234567002", Email = "ekoberlian@mail.com" },
+        //    new SalesPerson { SalesId = 3, Name = "Farah", DealerId = 1, PhoneNumber = "081234567003", Email = "farahsrikandi@gmail.com" },
+        //    new SalesPerson { SalesId = 4, Name = "Nurul", DealerId = 2, PhoneNumber = "088992203427", Email = "Nurulsales@gmail.com" }
+        //);
+
+        //// DealerCar
+        //modelBuilder.Entity<DealerCar>().HasData(
+        //    new DealerCar { DealerCarId = 1, CarId = 6, DealerId = 2, Price = 350000000, Stock = 20, DiscountPercent = 10, FeePercent = 2 },
+        //    new DealerCar { DealerCarId = 2, CarId = 1, DealerId = 1, Price = 291500000, Stock = 30, DiscountPercent = 8, FeePercent = 1 },
+        //    new DealerCar { DealerCarId = 3, CarId = 2, DealerId = 2, Price = 253700000, Stock = 14, DiscountPercent = 8.5, FeePercent = 1 },
+        //    new DealerCar { DealerCarId = 4, CarId = 5, DealerId = 5, Price = 650000000, Stock = 10, DiscountPercent = 5, FeePercent = 1 },
+        //    new DealerCar { DealerCarId = 5, CarId = 4, DealerId = 3, Price = 400000000, Stock = 10, DiscountPercent = 10, FeePercent = 1 },
+        //    new DealerCar { DealerCarId = 7, CarId = 3, DealerId = 2, Price = 550000000, Stock = 10, DiscountPercent = 5, FeePercent = 1 },
+        //    new DealerCar { DealerCarId = 10, CarId = 4, DealerId = 2, Price = 355000000, Stock = 5, DiscountPercent = 10, FeePercent = 2 },
+        //    new DealerCar { DealerCarId = 12, CarId = 6, DealerId = 3, Price = 355000000, Stock = 6, DiscountPercent = 10, FeePercent = 2 }
+        //);
+
     }
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
