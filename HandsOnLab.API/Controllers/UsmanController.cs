@@ -16,6 +16,32 @@ namespace HandsOnLab.API.Controllers
             _usmanBL = usmanBL;
         }
 
+        //login
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync(LoginDTO loginDTO)
+        {
+            if (loginDTO == null)
+            {
+                return BadRequest("Login data cannot be null");
+            }
+            try
+            {
+                var userWithToken = await _usmanBL.LoginAsync(loginDTO);
+                if (userWithToken != null)
+                {
+                    return Ok(userWithToken);
+                }
+                else
+                {
+                    return Unauthorized("Invalid login credentials");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+            }
+        }
+
         //registration
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(RegistrationDTO registrationDTO)

@@ -26,9 +26,32 @@ namespace HandsOnLab.BL
             throw new NotImplementedException();
         }
 
-        public Task<UserWithTokenDTO> LoginAsync(LoginDTO loginDTO)
+        public async Task<UserWithTokenDTO> LoginAsync(LoginDTO loginDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (loginDTO == null)
+                {
+                    throw new ArgumentNullException(nameof(loginDTO), "Login data cannot be null");
+                }
+                var user = await _usmanDAL.LoginAsync(loginDTO.Email, loginDTO.Password);
+                if (user == null)
+                {
+                    return null; // User not found or invalid password
+                }
+                // Here you would typically generate a JWT token or similar for the user
+                // For simplicity, we are returning a dummy token
+                var token = "dummy_token"; // Replace with actual token generation logic
+                return new UserWithTokenDTO
+                {
+                    Email = user.Email,
+                    Token = token
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> RegisterAsync(RegistrationDTO registrationDTO)

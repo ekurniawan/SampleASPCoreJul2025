@@ -15,7 +15,6 @@ namespace HandsOnLab.DAL
             _usermManager = userManager;
         }
 
-
         public Task<bool> AddUserToRoleAsync(string email, string roleName)
         {
             throw new NotImplementedException();
@@ -26,9 +25,30 @@ namespace HandsOnLab.DAL
             throw new NotImplementedException();
         }
 
-        public Task<bool> LoginAsync(string email, string password)
+        public async Task<IdentityUser> LoginAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _usermManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return null; // User not found
+                }
+                var result = await _usermManager.CheckPasswordAsync(user, password);
+                if (result)
+                {
+                    return user; // Login successful
+                }
+                else
+                {
+                    return null; // Invalid password
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<bool> RegisterAsync(string email, string password)
