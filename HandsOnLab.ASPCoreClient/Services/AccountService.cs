@@ -6,10 +6,16 @@ namespace HandsOnLab.ASPCoreClient.Services
     public class AccountService : IAccount
     {
         private readonly HttpClient _httpClient;
-        public AccountService(HttpClient httpClient)
+        private readonly IConfiguration _configuration;
+
+        public AccountService(HttpClient httpClient, IConfiguration configuration)
         {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _httpClient.BaseAddress = new Uri("https://localhost:7095/");
+
+            var backendUrl = _configuration.GetValue<string>("BackendUrl");
+            _httpClient.BaseAddress = new Uri(backendUrl);
+
         }
 
 
