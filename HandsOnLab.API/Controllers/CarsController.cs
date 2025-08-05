@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HandsOnLab.API.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "sales")]
     [Route("api/[controller]")]
     [ApiController]
     public class CarsController : ControllerBase
@@ -16,6 +16,7 @@ namespace HandsOnLab.API.Controllers
         {
             _carBL = carBL;
         }
+
 
         [HttpGet]
         public ActionResult<IEnumerable<CarDTO>> GetCars()
@@ -47,7 +48,8 @@ namespace HandsOnLab.API.Controllers
             return Ok(cars);
         }
 
-        //insert
+
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult<CarDTO> AddCar(CarInsertDTO carInsertDto)
         {
@@ -70,7 +72,7 @@ namespace HandsOnLab.API.Controllers
             }
         }
 
-
+        [Authorize(Roles = "admin")]
         [HttpPut("{id}")]
         public ActionResult<CarDTO> UpdateCar(int id, CarUpdateDTO carUpdateDto)
         {

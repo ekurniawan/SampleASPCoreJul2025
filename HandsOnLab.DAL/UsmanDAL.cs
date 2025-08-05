@@ -10,19 +10,70 @@ namespace HandsOnLab.DAL
     public class UsmanDAL : IUsman
     {
         private readonly UserManager<IdentityUser> _usermManager;
-        public UsmanDAL(UserManager<IdentityUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public UsmanDAL(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _usermManager = userManager;
+            _roleManager = roleManager;
         }
 
-        public Task<bool> AddUserToRoleAsync(string email, string roleName)
+        public async Task<bool> AddUserToRoleAsync(string email, string roleName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var user = await _usermManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return false; // User not found
+                }
+                if (!await _roleManager.RoleExistsAsync(roleName))
+                {
+                    return false; // Role does not exist
+                }
+                var result = await _usermManager.AddToRoleAsync(user, roleName);
+                return result.Succeeded;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<bool> CreateRoleAsync(string roleName)
+        public async Task<bool> CreateRoleAsync(string roleName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (!await _roleManager.RoleExistsAsync(roleName))
+                {
+                    var role = new IdentityRole(roleName);
+                    var result = await _roleManager.CreateAsync(role);
+                    return result.Succeeded;
+                }
+                return true; // Role already exists
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<string>> GetRolesByUserAsync(string email)
+        {
+            try
+            {
+                var user = await _usermManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    return new List<string>(); // User not found
+                }
+                var roles = await _usermManager.GetRolesAsync(user);
+                return roles.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IdentityUser> LoginAsync(string email, string password)

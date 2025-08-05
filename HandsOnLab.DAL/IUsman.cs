@@ -17,6 +17,7 @@ namespace HandsOnLab.DAL
         Task<bool> CreateRoleAsync(string roleName);
         //add user to role
         Task<bool> AddUserToRoleAsync(string email, string roleName);
-
+        Task<List<string>> GetRolesByUserAsync(string email);
     }
 }
+

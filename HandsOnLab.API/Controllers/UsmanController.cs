@@ -67,5 +67,58 @@ namespace HandsOnLab.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
             }
         }
+
+        //create role
+        [HttpPost("create-role")]
+        public async Task<IActionResult> CreateRoleAsync(RoleCreateDTO roleCreateDTO)
+        {
+            if (string.IsNullOrWhiteSpace(roleCreateDTO.RoleName))
+            {
+                return BadRequest("Role name cannot be empty");
+            }
+            try
+            {
+                var result = await _usmanBL.CreateRoleAsync(roleCreateDTO);
+                if (result)
+                {
+                    return Ok("Role created successfully");
+                }
+                else
+                {
+                    return BadRequest("Role already exists or creation failed");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        //register user to role
+        [HttpPost("add-user-to-role")]
+        public async Task<IActionResult> AddUserToRoleAsync(RoleInsertDTO roleInsertDTO)
+        {
+            if (roleInsertDTO == null || string.IsNullOrWhiteSpace(roleInsertDTO.Email) || string.IsNullOrWhiteSpace(roleInsertDTO.RoleName))
+            {
+                return BadRequest("Email and role name cannot be empty");
+            }
+            try
+            {
+                var result = await _usmanBL.AddUserToRoleAsync(roleInsertDTO.Email, roleInsertDTO.RoleName);
+                if (result)
+                {
+                    return Ok("User added to role successfully");
+                }
+                else
+                {
+                    return BadRequest("User not found or role does not exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Internal server error: {ex.Message}");
+            }
+
+        }
     }
 }

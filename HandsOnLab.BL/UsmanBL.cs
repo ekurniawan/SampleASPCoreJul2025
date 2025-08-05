@@ -19,14 +19,61 @@ namespace HandsOnLab.BL
             _appSettings = appSettings.Value;
         }
 
-        public Task<bool> AddUserToRoleAsync(string email, string roleName)
+        public async Task<bool> AddUserToRoleAsync(string email, string roleName)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (string.IsNullOrEmpty(email))
+                {
+                    throw new ArgumentNullException(nameof(email), "Email cannot be null or empty");
+                }
+                if (string.IsNullOrEmpty(roleName))
+                {
+                    throw new ArgumentNullException(nameof(roleName), "Role name cannot be null or empty");
+                }
+                var result = await _usmanDAL.AddUserToRoleAsync(email, roleName);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<bool> CreateRoleAsync(string roleName)
+        public async Task<bool> CreateRoleAsync(RoleCreateDTO roleCreateDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (string.IsNullOrEmpty(roleCreateDTO.RoleName))
+                {
+                    throw new ArgumentNullException(nameof(roleCreateDTO), "Role name cannot be null or empty");
+                }
+                var result = await _usmanDAL.CreateRoleAsync(roleCreateDTO.RoleName);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+
+        public async Task<List<string>> GetRolesByUserAsync(string email)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email))
+                {
+                    throw new ArgumentNullException(nameof(email), "Email cannot be null or empty");
+                }
+                var roles = await _usmanDAL.GetRolesByUserAsync(email);
+                return roles;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<UserWithTokenDTO> LoginAsync(LoginDTO loginDTO)
@@ -46,6 +93,15 @@ namespace HandsOnLab.BL
                 //add claim
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Email, user.Email));
+                var roles = await _usmanDAL.GetRolesByUserAsync(user.Email);
+                if (roles != null && roles.Count > 0)
+                {
+                    foreach (var role in roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role));
+                    }
+                }
+
 
                 var tokenHandler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
